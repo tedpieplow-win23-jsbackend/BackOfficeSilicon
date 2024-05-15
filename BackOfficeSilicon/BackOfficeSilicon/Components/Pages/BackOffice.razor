@@ -9,6 +9,10 @@
     <div class="container">
         @switch (componentToDisplay)
         {
+            case "Dashboard":
+                <Dashboard />
+                break;
+
             case "Administrators":
                 <AdministratorsView />
                 break;
@@ -30,7 +34,7 @@
                 break;
 
             default:
-                <BackOfficeMain />
+                <Dashboard />
                 break;
         }
         

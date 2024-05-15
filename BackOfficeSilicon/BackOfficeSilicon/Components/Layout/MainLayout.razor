@@ -1,9 +1,20 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+
 
 <div class="wrapper">
-    <_Header />
+
+    @if (!Navigation.Uri.Contains("/signin"))
+    {
+        <_Header />
+    }
+
     @Body
-    <_Footer />
+    @if (!Navigation.Uri.Contains("/signin"))
+    {
+        <_Footer />
+    }
+
 </div>
 
 <div id="blazor-error-ui">

@@ -1,7 +1,7 @@
 ﻿#signin {
     height: 100vh;
     background-color: var(--color-gray-001);
-    padding-top: 120px;
+    padding-top: 13rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -24,16 +24,14 @@
         }
 
         .section-title {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             margin-bottom: 2.5rem;
-            align-items: flex-start;
-            padding-right: 9rem;
 
-            h1 {
-                color: var(--color-gray-900);
-            }
-
-            a {
-                color: $theme;
+            img {
+                height: 200px;
+                object-fit: contain;
             }
         }
 
@@ -51,15 +49,19 @@
             }
 
             .email, .password {
+                position: relative;
                 display: flex;
                 flex-direction: column;
                 width: 100%;
+                gap: 10px;
+            }
 
-                label {
-                    color: var(--color-gray-900);
-                    font-weight: 800;
-                    margin-bottom: 0.2rem;
-                }
+            i {
+                position: absolute;
+                top: 30px;
+                right: 20px;
+                font-size: 1.3rem;
+                color: var(--color-gray-900);
             }
 
             .validation {
@@ -67,59 +69,11 @@
                 justify-content: space-between;
             }
 
-            .checkbox {
-                display: flex;
-                flex-direction: row;
-                align-items: flex-start;
-                margin-bottom: 1.2rem;
-
-                input[type="checkbox"] {
-                    background-color: var(--color-gray-500);
-                    color: var(--color-gray-500);
-                    margin-right: .8rem;
-                    margin-top: .5rem;
-                    margin-left: .4rem;
-                    transform: scale(1.5);
-                }
-
-                p {
-                    font-weight: 400;
-                }
-            }
-
-            .social-box {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-
-                .social-media {
-                    display: flex;
-                    gap: 2.2rem;
-                    width: 100%;
-
-                    a {
-                        text-align: center;
-                        border: 1px solid var(--color-gray-300);
-                        background-color: var(--color-gray-100);
-                        color: var(--color-gray-700);
-                        border-radius: 0.3rem;
-                        padding: 10px;
-                        font-weight: 700;
-                        width: 100%;
-
-                        i {
-                            color: var(--color-gray-700);
-                            padding-right: .5rem;
-                        }
-                    }
-                }
-            }
-
             input {
-                border: 1px solid var(--color-gray-300);
+                border: 1px solid var(--color-gray-500);
                 background-color: var(--color-gray-100);
-                padding: .7rem;
-                border-radius: .3rem;
+                padding: 1rem;
+                border-radius: .5rem;
                 margin-bottom: 1rem;
 
                 &.input-validation-error {
@@ -140,11 +94,16 @@
                 margin-bottom: 15px;
             }
 
-            .btn-theme {
-                width: 100%;
-                max-width: 100%;
-                box-shadow: 0 3px 10px #6366F180, 0 4px 5px #6366F160;
-                margin-bottom: 2rem;
+            .button-holder {
+                margin-top: 1rem;
+                display: flex;
+                justify-content: center;
+
+                .btn-theme {
+                    max-width: 100%;
+                    box-shadow: 0 3px 10px #6366F180, 0 4px 5px #6366F160;
+                    margin-bottom: 2rem;
+                }
             }
 
             span {
@@ -164,11 +123,6 @@
                         content: '\2BBF';
                     }
                 }
-            }
-
-            p {
-                font-weight: 800;
-                color: var(--color-gray-800);
             }
         }
     }

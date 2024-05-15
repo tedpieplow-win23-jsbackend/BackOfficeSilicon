@@ -1,29 +1,6 @@
 ﻿@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap");
 :root {
-  --color-gray-001: #FFFFFF;
-  --color-gray-100: #FEFEFE;
-  --color-gray-101: #F3F6FF;
-  --color-gray-200: #EFF2FC;
-  --color-gray-300: #E2E5F1;
-  --color-gray-400: #D4D7E5;
-  --color-gray-500: #B4B7C9;
-  --color-gray-600: #9397AD;
-  --color-gray-700: #565973;
-  --color-gray-800: #33354D;
-  --color-gray-900: #0B0F19;
-  --color-white: #FFFFFF;
-  --color-black: #000000;
-  --color-gray-000: #EFF2FC;
-  --color-theme: #6366F1;
-  --color-danger: #E57E88;
-  --color-success: #BCF7D2;
-  --color-warning: #FFE8AD;
-  --font-standard: "Manrope", sans-serif;
-  color-scheme: light;
-}
-
-.dark-theme {
   --color-gray-001: #0B0F19;
   --color-gray-100: #12161F;
   --color-gray-101: #151922;
@@ -459,8 +436,10 @@ a:hover {
 }
 
 .backoffice {
+  background-color: var(--color-gray-001);
   display: grid;
   grid-template-columns: 15% 85%;
+  color: var(--color-gray-900);
 }
 
 footer {
@@ -521,6 +500,9 @@ header .container #menu {
 header .container #menu nav {
   display: flex;
   gap: 15px;
+}
+header .container #menu nav h4 {
+  color: var(--color-gray-900);
 }
 header .container #menu nav a {
   color: var(--color-gray-900) !important;
@@ -671,7 +653,7 @@ header .container .btn-mobile {
 #signin {
   height: 100vh;
   background-color: var(--color-gray-001);
-  padding-top: 120px;
+  padding-top: 13rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -692,15 +674,14 @@ header .container .btn-mobile {
   display: block;
 }
 #signin .main-holder .section-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-bottom: 2.5rem;
-  align-items: flex-start;
-  padding-right: 9rem;
 }
-#signin .main-holder .section-title h1 {
-  color: var(--color-gray-900);
-}
-#signin .main-holder .section-title a {
-  color: #6366F1;
+#signin .main-holder .section-title img {
+  height: 200px;
+  object-fit: contain;
 }
 #signin .main-holder .login-box {
   position: relative;
@@ -715,65 +696,28 @@ header .container .btn-mobile {
   height: 0;
 }
 #signin .main-holder .login-box .email, #signin .main-holder .login-box .password {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
+  gap: 10px;
 }
-#signin .main-holder .login-box .email label, #signin .main-holder .login-box .password label {
+#signin .main-holder .login-box i {
+  position: absolute;
+  top: 30px;
+  right: 20px;
+  font-size: 1.3rem;
   color: var(--color-gray-900);
-  font-weight: 800;
-  margin-bottom: 0.2rem;
 }
 #signin .main-holder .login-box .validation {
   display: flex;
   justify-content: space-between;
 }
-#signin .main-holder .login-box .checkbox {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  margin-bottom: 1.2rem;
-}
-#signin .main-holder .login-box .checkbox input[type=checkbox] {
-  background-color: var(--color-gray-500);
-  color: var(--color-gray-500);
-  margin-right: 0.8rem;
-  margin-top: 0.5rem;
-  margin-left: 0.4rem;
-  transform: scale(1.5);
-}
-#signin .main-holder .login-box .checkbox p {
-  font-weight: 400;
-}
-#signin .main-holder .login-box .social-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-#signin .main-holder .login-box .social-box .social-media {
-  display: flex;
-  gap: 2.2rem;
-  width: 100%;
-}
-#signin .main-holder .login-box .social-box .social-media a {
-  text-align: center;
-  border: 1px solid var(--color-gray-300);
-  background-color: var(--color-gray-100);
-  color: var(--color-gray-700);
-  border-radius: 0.3rem;
-  padding: 10px;
-  font-weight: 700;
-  width: 100%;
-}
-#signin .main-holder .login-box .social-box .social-media a i {
-  color: var(--color-gray-700);
-  padding-right: 0.5rem;
-}
 #signin .main-holder .login-box input {
-  border: 1px solid var(--color-gray-300);
+  border: 1px solid var(--color-gray-500);
   background-color: var(--color-gray-100);
-  padding: 0.7rem;
-  border-radius: 0.3rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
   margin-bottom: 1rem;
 }
 #signin .main-holder .login-box input.input-validation-error {
@@ -790,8 +734,12 @@ header .container .btn-mobile {
   margin-top: 35px;
   margin-bottom: 15px;
 }
-#signin .main-holder .login-box .btn-theme {
-  width: 100%;
+#signin .main-holder .login-box .button-holder {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+#signin .main-holder .login-box .button-holder .btn-theme {
   max-width: 100%;
   box-shadow: 0 3px 10px rgba(99, 102, 241, 0.5019607843), 0 4px 5px rgba(99, 102, 241, 0.3764705882);
   margin-bottom: 2rem;
@@ -815,10 +763,6 @@ header .container .btn-mobile {
   font-size: 2em;
   display: block;
   content: "⮿";
-}
-#signin .main-holder .login-box p {
-  font-weight: 800;
-  color: var(--color-gray-800);
 }
 
 #signup {

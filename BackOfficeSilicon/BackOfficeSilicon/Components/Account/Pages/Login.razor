@@ -1,4 +1,5 @@
-﻿@page "/signin"
+﻿@page "/"
+@page "/signin"
 
 @using System.ComponentModel.DataAnnotations
 @using BackOfficeSilicon.Data
@@ -29,7 +30,7 @@
         }
 
         <div class="section-title">
-            <img />
+            <img src="images/silicon-logo-dark.svg" />
         </div>
 
         <div class="login-box">
@@ -38,21 +39,22 @@
                 <DataAnnotationsValidator />
                 <div class="email">
                     <div class="validation">
-                        <label asp-for="Form.Email">Email</label>
                         <ValidationMessage For="() => SignInForm.Email" class="text-danger" />
                     </div>
-                    <InputText @bind-Value="SignInForm.Email" type="email" />
+                    <i class="fa-regular fa-envelope"></i>
+                    <InputText @bind-Value="SignInForm.Email" type="email" placeholder="EMAIL"/>
                 </div>
 
                 <div class="password">
                     <div class="validation">
-                        <label asp-for="Form.Password">Password</label>
                         <ValidationMessage For="() => SignInForm.Password" class="text-danger" />
                     </div>
-                    <InputText @bind-Value="SignInForm.Password" type="password" />
+                    <i class="fa-sharp fa-thin fa-lock"></i>
+                    <InputText @bind-Value="SignInForm.Password" type="password" placeholder="PASSWORD" />
                 </div>
-
-                <button type="submit" class="btn-theme" disabled="@isBusy">Sign in</button>
+                <div class="button-holder">
+                    <button type="submit" class="btn-theme" disabled="@isBusy">Sign in</button>
+                </div>
             </EditForm>
         </div>
     </div>
