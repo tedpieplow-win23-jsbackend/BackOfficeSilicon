@@ -1,16 +1,25 @@
 ﻿@rendermode InteractiveServer
 
-<div class="nav-bar">
-    <i class="icon fa-solid fa-building-memo"></i>
-    <nav>
-        <button class="link btn-theme" @onclick='() => NavigateToPage("Administrators")'><i class="fa-duotone fa-users"></i>Administrators</button>
-        <button class="link btn-theme" @onclick='() => NavigateToPage("Users")'><i class="fa-duotone fa-users"></i>Users</button>
-        <button class="link btn-theme" @onclick='() => NavigateToPage("Newsletter")'><i class="fa-duotone fa-envelope"></i>NewsLetter</button>
-        <button class="link btn-theme" @onclick='() => NavigateToPage("Courses")'><i class="fa-regular fa-graduation-cap"></i>Courses</button>
-        <button class="link btn-theme" @onclick='() => NavigateToPage("Chat")'><i class="fa-sharp fa-solid fa-headset"></i>Chat</button>
-    </nav>
-</div>
 
+<div>
+
+    <div class="profile">
+        <img alt="user-image"/>
+        <p class="email"></p>
+    </div>
+
+    <div class="nav-bar">
+        <i class="icon fa-solid fa-building-memo"></i>
+        <nav>
+            <NavLink class="link btn-theme" @onclick='() => NavigateToPage("Administrators")'><i class="fa-duotone fa-users"></i>Administrators</NavLink>
+            <NavLink class="link btn-theme" @onclick='() => NavigateToPage("Users")'><i class="fa-duotone fa-users"></i>Users</NavLink>
+            <NavLink class="link btn-theme" @onclick='() => NavigateToPage("Newsletter")'><i class="fa-duotone fa-envelope"></i>NewsLetter</NavLink>
+            <NavLink class="link btn-theme" @onclick='() => NavigateToPage("Courses")'><i class="fa-regular fa-graduation-cap"></i>Courses</NavLink>
+            <NavLink class="link btn-theme" @onclick='() => NavigateToPage("Chat")'><i class="fa-sharp fa-solid fa-headset"></i>Chat</NavLink>
+        </nav>
+    </div>
+
+</div>
 
 @code {
     [Parameter]

@@ -637,16 +637,16 @@ header .container .btn-mobile {
 .nav-bar nav {
   display: flex;
   flex-direction: column;
-  align-items: left;
   gap: 1rem;
   max-width: 300px;
 }
 .nav-bar nav .link {
+  justify-content: flex-start;
   color: var(--color-gray-900);
   background-color: var(--color-theme);
   font-weight: 800;
   padding: 10px;
-  width: auto;
+  width: 250px;
   margin-bottom: 0.2rem;
   text-decoration: none;
   border-radius: 0.4rem;
@@ -654,6 +654,7 @@ header .container .btn-mobile {
 .nav-bar nav .link i {
   padding-right: 1rem;
   padding-left: 1.2rem;
+  font-size: 2rem;
 }
 .nav-bar nav .link:hover, .nav-bar nav .link:active, .nav-bar nav .link:focus,
 .nav-bar nav .link .active {
