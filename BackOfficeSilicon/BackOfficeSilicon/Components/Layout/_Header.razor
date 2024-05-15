@@ -1,0 +1,61 @@
+﻿
+
+
+<header>
+    <div class="container">
+        @* <NavLink id="logo" href="/"><img src="/images/icons/@(isDark ? "silicon-logo-dark.svg" : "silicon-logo-light_theme.svg")" alt="Silicon-logo"></NavLink> *@
+
+        <div id="menu" class="hide">
+            <nav>
+                <NavLink href="/" class="menu-link asp-fragment">Overview</NavLink>
+                <NavLink href="#features" class="menu-link asp-fragment">Features</NavLink>
+                <NavLink href="/contact" class="menu-link">Contact</NavLink>
+
+                <AuthorizeView>
+                    <Authorized>
+                        <NavLink href="/courses" class="menu-link">Courses</NavLink>
+                    </Authorized>
+                </AuthorizeView>
+
+                <AuthorizeView Roles="SuperUser, Administrator, Author">
+                    <Authorized>
+                        <NavLink href="/backoffice" class="menu-link">Courses</NavLink>
+                    </Authorized>
+                </AuthorizeView>
+
+            </nav>
+        </div>
+
+@*         <div class="btn-switch">
+            <label>Light</label>
+            <label class="switch" for="switch-mode">
+                <input type="checkbox" id="switch-mode" />
+                <span class="slider round" id="slider"></span>
+            </label>
+            <label>Dark</label>
+        </div> *@
+
+        <div class="account-buttons hide" id="account-buttons">
+            <AuthorizeView>
+                <Authorized>
+                    <NavLink href="/signout" class="sign-out" title="Sign Out"><i class="fa-regular fa-right-from-bracket "></i></NavLink>
+                    @* <NavLink title="Profile"><img class="profile-image" src="/images/profiles/@user!.ProfileImageUrl" /></NavLink> *@
+                </Authorized>
+                <NotAuthorized>
+                    <NavLink href="/signin" class="btn-gray"><i class="fa-regular fa-right-to-bracket"></i><span>Sign In</span></NavLink>
+                    <NavLink href="/signup" class="btn-theme"><i class="fa-regular fa-user"></i><span>Sign Up</span></NavLink>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+
+        <button onclick="toggleMenu()" class="btn-mobile">
+            <i id="barsIcon" class="fa-regular fa-bars"></i>
+            <i id="crossIcon" class="fa-sharp fa-solid fa-xmark hide"></i>
+        </button>
+
+    </div>
+</header>
+
+@code {
+
+}

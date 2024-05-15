@@ -1,0 +1,49 @@
+﻿@rendermode InteractiveServer
+@page "/backoffice"
+
+
+<PageTitle>BackOffice</PageTitle>
+
+<section class="backoffice">
+    <Menu OnClick="RenderClickedPage"/>
+    <div class="container">
+        @switch (componentToDisplay)
+        {
+            case "Administrators":
+                <AdministratorsView />
+                break;
+
+            case "Users":
+                <UsersView />
+                break;
+
+            case "Newsletter":
+                <NewsLettersView />
+                break;
+
+            case "Courses":
+                <CoursesView />
+                break;
+
+            case "Chat":
+                <ChatView />
+                break;
+
+            default:
+                <BackOfficeMain />
+                break;
+        }
+        
+    </div>
+
+</section>
+
+
+@code {
+    private string componentToDisplay = "default";
+
+    private void RenderClickedPage(string page)
+    {
+        componentToDisplay = page;
+    }
+}
