@@ -435,6 +435,27 @@ a:hover {
   color: #FFFFFF;
 }
 
+.btn-red {
+  line-height: 160%;
+  font-weight: 400;
+  color: #565973;
+  font-family: "Manrope", sans-serif;
+  font-size: 20px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  width: 44px;
+  height: 44px;
+  background-color: #EF4444;
+  color: #E2E5F1;
+}
+.btn-red:hover {
+  text-decoration: none;
+  background: #6366F1;
+  color: #FFFFFF;
+}
+
 .backoffice {
   background-color: var(--color-gray-001);
   display: grid;
@@ -824,4 +845,37 @@ header .container .btn-mobile {
 #signup .container .btn-theme {
   width: 100%;
   margin-top: 20px;
+}
+
+.newsletter h1 {
+  color: var(--color-black);
+}
+.newsletter .content-box {
+  display: flex;
+  flex-direction: column;
+}
+.newsletter .content-box .content-item-dark {
+  background-color: var(--color-gray-001);
+  display: grid;
+  grid-template-columns: repeat(10, 10%);
+}
+.newsletter .content-box .content-item-light {
+  background-color: var(--color-gray-100);
+  display: grid;
+  grid-template-columns: repeat(10, 10%);
+}
+.newsletter .content-box .red {
+  color: #EF4444;
+}
+.newsletter .content-box .green {
+  color: #22C55E;
+}
+.newsletter .content-box .conten-item-email {
+  box-sizing: border-box;
+  max-width: 100%;
+  word-break: break-all;
+  overflow-wrap: break-word;
+  overflow: auto;
+  white-space: normal;
+  hyphens: auto;
 }
