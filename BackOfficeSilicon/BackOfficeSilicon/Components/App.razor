@@ -12,12 +12,15 @@
     <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" href="app.css" />
     <link rel="stylesheet" href="BackOfficeSilicon.styles.css" />
+    <link rel="stylesheet" href="/scss/" />
+@*     <link rel="stylesheet" href="_content/Blazored.Modal/blazored-modal.css"/> *@
     <HeadOutlet />
 </head>
 
-<body>
-    <Routes />
-    <script src="_framework/blazor.web.js"></script>
-</body>
-
+<CascadingBlazoredModal>
+    <body>
+        <Routes />
+        <script src="_framework/blazor.web.js"></script>
+    </body>
+</CascadingBlazoredModal>
 </html>

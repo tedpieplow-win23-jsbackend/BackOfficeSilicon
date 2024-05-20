@@ -137,3 +137,21 @@
         color: $white;
     }
 }
+
+.btn-red {
+    @include text-xl;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    width: 44px;
+    height: 44px;
+    background-color: $danger;
+    color: $gray-300;
+
+    &:hover {
+        text-decoration: none;
+        background: $theme;
+        color: $white;
+    }
+}

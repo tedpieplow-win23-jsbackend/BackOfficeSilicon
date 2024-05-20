@@ -1,0 +1,59 @@
+.newsletter {
+    h1 {
+        color: var(--color-black);
+    }
+
+    .options-bar {
+    }
+
+    .content-box {
+        display: flex;
+        flex-direction: column;
+
+        .content-item-dark {
+            background-color: var(--color-gray-001);
+            display: grid;
+            grid-template-columns: repeat(10, 10%);
+        }
+
+        .content-item-light {
+            background-color: var(--color-gray-100);
+            display: grid;
+            grid-template-columns: repeat(10, 10%);
+        }
+
+        .red {
+            color: $danger;
+        }
+
+        .green {
+            color: $success;
+        }
+
+        .conten-item-email {
+            box-sizing: border-box;
+            max-width: 100%;
+            word-break: break-all;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            overflow: auto;
+            white-space: normal;
+            hyphens: auto;
+            overflow-x: hidden;
+
+            p {
+
+                word-break: break-all;
+                overflow-wrap: break-word;
+                overflow: auto;
+                white-space: normal;
+                hyphens: auto;
+                overflow-x: hidden;
+            }
+        }
+    }
+}
+
+.newsletter-form{
+
+}
