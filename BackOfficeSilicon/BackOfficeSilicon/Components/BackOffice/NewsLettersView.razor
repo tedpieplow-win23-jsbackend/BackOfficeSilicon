@@ -1,5 +1,11 @@
-﻿@using System.Text
+﻿@inject IdentityRedirectManager RedirectManager
+@inject NavigationManager NavigationManager
+@using System.Text
+@using BackOfficeSilicon.Components.Account
+@using BackOfficeSilicon.Models
+
 @rendermode InteractiveServer
+
 <h3>NewsLettersView</h3>
 <div class="container newsletter">
     <h1>Newsletter</h1>
@@ -35,16 +41,16 @@
                 <p><i class="fa-solid @GetIcon(item.EventUpdates)"></i></p>
                 <p><i class="fa-solid @GetIcon(item.StartupsWeekly)"></i></p>
                 <p><i class="fa-solid @GetIcon(item.Podcasts)"></i></p>
-                <p><i class="fa-solid fa-pen"></i></p>
+                <button class="btn" @onclick="() => Update(item.Email)"><i class="fa-solid fa-pen"></i></button>
             </div>
             IsDark = (i % 2 == 0);
             i++;
         }
-
     </div>
 </div>
-<NewsletterUpdateModal />
 @code {
+    [Parameter]
+    public EventCallback<string> OnClick { get; set; }
     [Parameter]
     public bool IsDark { get; set; }
     private string GetIcon(bool value) => value ? "fa-check green" : "fa-xmark red";
@@ -52,7 +58,7 @@
     private string GetItemClass() => IsDark ? "content-item-dark" : "content-item-light";
 
     private IEnumerable<NewsletterModel> List { get; set; } = [];
-    
+
     protected override async Task OnParametersSetAsync()
     {
         try
@@ -62,6 +68,13 @@
         }
         catch (Exception) { }
     }
+
+    public async Task Update(string Email)
+    {
+        await OnClick.InvokeAsync(Email);
+        // NavigationManager.NavigateTo($"/newsletter/edit?Email={Email}");
+        // return Task.CompletedTask;
+    } 
 
 
     private async Task DeleteAsync(string email)
@@ -97,17 +110,5 @@
         {
         }
         return null!;
-    }
-
-    public class NewsletterModel()
-    {
-        public string Email { get; set; } = null!;
-        public bool IsSubscribed { get; set; }
-        public bool DailyNewsLetter { get; set; }
-        public bool AdvertisingUpdates { get; set; }
-        public bool WeekInReviews { get; set; }
-        public bool EventUpdates { get; set; }
-        public bool StartupsWeekly { get; set; }
-        public bool Podcasts { get; set; }
     }
 }

@@ -875,7 +875,17 @@ header .container .btn-mobile {
   max-width: 100%;
   word-break: break-all;
   overflow-wrap: break-word;
+  word-wrap: break-word;
   overflow: auto;
   white-space: normal;
   hyphens: auto;
+  overflow-x: hidden;
+}
+.newsletter .content-box .conten-item-email p {
+  word-break: break-all;
+  overflow-wrap: break-word;
+  overflow: auto;
+  white-space: normal;
+  hyphens: auto;
+  overflow-x: hidden;
 }

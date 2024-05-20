@@ -1,0 +1,23 @@
+﻿@rendermode InteractiveServer
+
+@if (string.IsNullOrEmpty(email))
+{
+
+    <NewsLettersView OnClick="RenderClickedPage"/>
+}
+else {
+    <NewsletterEditForm OnClick="RenderClickedPage" Email="@email" />
+}
+    
+
+
+@code {
+    [Parameter]
+    public string? EmailIn { get; set; }
+    private string email = "";
+    private void RenderClickedPage(string EmailIn)
+    {
+        email = EmailIn;
+        StateHasChanged();
+    }
+}

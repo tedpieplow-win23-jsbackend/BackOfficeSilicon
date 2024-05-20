@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Blazored.Modal;
+using BackOfficeSilicon.Services;
 
 namespace BackOfficeSilicon.Configurations;
 
@@ -23,6 +24,7 @@ public static class ServiceConfiguration
         services.AddScoped<IdentityRedirectManager>();
         services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
         services.AddScoped<ClaimsPrincipal>();
+        services.AddScoped<NewsletterService>();
 
         services.AddBlazoredModal();
 

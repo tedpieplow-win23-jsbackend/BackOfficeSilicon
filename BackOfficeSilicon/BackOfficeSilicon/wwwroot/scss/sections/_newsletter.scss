@@ -21,20 +21,39 @@
             display: grid;
             grid-template-columns: repeat(10, 10%);
         }
-        .red{
+
+        .red {
             color: $danger;
         }
-        .green{
+
+        .green {
             color: $success;
         }
-        .conten-item-email{
+
+        .conten-item-email {
             box-sizing: border-box;
             max-width: 100%;
             word-break: break-all;
             overflow-wrap: break-word;
+            word-wrap: break-word;
             overflow: auto;
             white-space: normal;
             hyphens: auto;
+            overflow-x: hidden;
+
+            p {
+
+                word-break: break-all;
+                overflow-wrap: break-word;
+                overflow: auto;
+                white-space: normal;
+                hyphens: auto;
+                overflow-x: hidden;
+            }
         }
     }
+}
+
+.newsletter-form{
+
 }
