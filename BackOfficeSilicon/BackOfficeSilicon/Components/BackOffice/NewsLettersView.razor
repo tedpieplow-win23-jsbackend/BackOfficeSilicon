@@ -14,8 +14,7 @@
     </div>
     <div class="content-box">
         <div class="content-item-dark column-titles">
-            <p>Delete</p>
-            <p>Email</p>
+            <p>Delete Update</p>
             <p>Is subscribed</p>
             <p>Daily newsletter</p>
             <p>Advertising updates</p>
@@ -23,16 +22,17 @@
             <p>Event updates</p>
             <p>Startups weekly</p>
             <p>Podcasts</p>
-            <p></p>
+
+            <p>Email</p>
         </div>
 
         @{int i = 0;}
         @foreach (var item in List)
         {
             <div class="@GetItemClass()">
-                <button class="btn-red" @onclick="() => DeleteAsync(item.Email)"><i class="fa-solid fa-trash"></i></button>
-                <div class="content-item-email">
-                    <p>@item.Email</p>
+                <div class="button-box">
+                    <button class="btn-red" @onclick="() => DeleteAsync(item.Email)"><i class="fa-solid fa-trash"></i></button>
+                    <button class="btn-theme" @onclick="() => Update(item.Email)"><i class="fa-solid fa-pen"></i></button>
                 </div>
                 <p><i class="fa-solid @GetIcon(item.IsSubscribed)"></i></p>
                 <p><i class="fa-solid @GetIcon(item.DailyNewsLetter)"></i></p>
@@ -41,7 +41,9 @@
                 <p><i class="fa-solid @GetIcon(item.EventUpdates)"></i></p>
                 <p><i class="fa-solid @GetIcon(item.StartupsWeekly)"></i></p>
                 <p><i class="fa-solid @GetIcon(item.Podcasts)"></i></p>
-                <button class="btn" @onclick="() => Update(item.Email)"><i class="fa-solid fa-pen"></i></button>
+                <div class="content-item-email">
+                    <p>@item.Email</p>
+                </div>
             </div>
             IsDark = (i % 2 == 0);
             i++;
