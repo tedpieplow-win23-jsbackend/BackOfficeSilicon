@@ -77,12 +77,12 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var userClaims = await UserService.GetUserClaimsAsync();
+        if (SignInManager.IsSignedIn(userClaims))
+            NavigationManager.NavigateTo("/backoffice");
+
         try
         {
-            var userClaims = await UserService.GetUserClaimsAsync();
-            if (SignInManager.IsSignedIn(userClaims))
-                NavigationManager.NavigateTo("/backoffice");
-
             var httpContext = HttpContextAccessor.HttpContext;
             if (HttpContext is not null)
             {
@@ -115,6 +115,7 @@
                 else
                     StatusMessage = "Failed to login, please try again";
             }
+
             StatusMessage = "You do not have the required permissions to view the Backoffice.";
 
             return;

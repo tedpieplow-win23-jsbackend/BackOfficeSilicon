@@ -1,5 +1,54 @@
-﻿<h3>AdministratorsView</h3>
-<p> vafan!!</p>
+﻿<div class="container administrators-form">
+    <EditForm FormName="administrators" Model="AdminModel" OnValidSubmit="Update" id="admin-form" method="post" novalidate>
+        <DataAnnotationsValidator />
+        <div class="checkbox-content">
+            <div class="checkboxes">
+                <div class="box">
+                    <InputText @bind-Value="User.Email" />
+                    <label>Email</label>
+                </div>
+                <div class="box">
+                    <InputText @bind-Value="User.Email" />
+                    <label>Email</label>
+                </div>
+                <div class="box">
+                    <InputText @bind-Value="User.Email" />
+                    <label>Email</label>
+                </div>
+                <div class="box">
+                        <InputText @bind-Value="User.Email" />
+                        <label>Email</label>
+                </div>
+                <div class="box">
+                        <InputText @bind-Value="User.Email" />
+                        <label>Email</label>
+                </div>
+                <div class="box">
+                        <InputText @bind-Value="User.Email" />
+                        <label>Email</label>
+                </div>
+                <div class="box">
+                        <InputText @bind-Value="User.Email" />
+                        <label>Email</label>
+                </div>
+            </div>
+        </div>
+        <div class="subscribe">
+@*             <InputText @bind-Value="SubscribeForm.Email" id="input-email" type="email" placeholder="Your Email" />
+            <button id="submit-button" type="submit" class="btn-theme"><span>Update</span></button>
+            <ValidationMessage For="() => SubscribeForm.Email" class="text-danger" /> *@
+        </div>
+    </EditForm>
+</div>
 @code {
+    [CascadingParameter]
+    private ApplicationUser User { get; set; } = null!;
 
+    [SupplyParameterFromForm]
+    private AdministratorModel AdminModel { get; set; } = default!;
+
+    public void Update()
+    {
+        
+    }
 }
