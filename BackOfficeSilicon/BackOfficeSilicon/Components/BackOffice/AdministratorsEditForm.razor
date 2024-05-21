@@ -1,0 +1,44 @@
+﻿@inject UserService UserService
+@inject UserManager<ApplicationUser> UserManager
+@inject ILogger<AdministratorsView> Logger
+
+<QuickGrid Items="AdminList.AsQueryable()">
+    <PropertyColumn Property="l => l.Email" Title="Email" Sortable="true" />
+    <PropertyColumn Property="l => l.FirstName" Title="FirstName" />
+    <PropertyColumn Property="l => l.LastName" Title="LastName" />
+    <PropertyColumn Property="l => l.Role" Title="Roles" />
+</QuickGrid>
+
+@code {
+
+    private AdministratorModel AdminModel { get; set; } = new();
+
+    private List<AdministratorModel> AdminList { get; set; } = [];
+
+    protected override async void OnInitialized()
+    {
+        try
+        {
+            var admins = UserManager.Users.ToList();
+
+            if (admins.Count != 0)
+            {
+                foreach (var admin in admins)
+                {
+                    var roleList = await UserManager.GetRolesAsync(admin);
+
+                    AdminModel.Email = admin.Email!;
+                    AdminModel.FirstName = admin.FirstName;
+                    AdminModel.LastName = admin.LastName;
+                    AdminModel.Role = roleList.FirstOrDefault()!;
+
+                    AdminList.Add(AdminModel);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex.Message);
+        }
+    }
+}
