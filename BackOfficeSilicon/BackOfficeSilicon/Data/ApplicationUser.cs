@@ -1,10 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace BackOfficeSilicon.Data
-{
-    // Add profile data for application users by adding properties to the ApplicationUser class
-    public class ApplicationUser : IdentityUser
-    {
-    }
+namespace BackOfficeSilicon.Data;
 
+public class ApplicationUser : IdentityUser
+{
 }
