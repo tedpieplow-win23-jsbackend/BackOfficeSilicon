@@ -859,33 +859,22 @@ header .container .btn-mobile {
   display: grid;
   grid-template-columns: repeat(10, 10%);
 }
+.newsletter .content-box .content-item-dark .button-box {
+  display: flex;
+  gap: 5px;
+}
 .newsletter .content-box .content-item-light {
   background-color: var(--color-gray-100);
   display: grid;
   grid-template-columns: repeat(10, 10%);
+}
+.newsletter .content-box .content-item-light .button-box {
+  display: flex;
+  gap: 5px;
 }
 .newsletter .content-box .red {
   color: #EF4444;
 }
 .newsletter .content-box .green {
   color: #22C55E;
-}
-.newsletter .content-box .conten-item-email {
-  box-sizing: border-box;
-  max-width: 100%;
-  word-break: break-all;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  overflow: auto;
-  white-space: normal;
-  hyphens: auto;
-  overflow-x: hidden;
-}
-.newsletter .content-box .conten-item-email p {
-  word-break: break-all;
-  overflow-wrap: break-word;
-  overflow: auto;
-  white-space: normal;
-  hyphens: auto;
-  overflow-x: hidden;
 }

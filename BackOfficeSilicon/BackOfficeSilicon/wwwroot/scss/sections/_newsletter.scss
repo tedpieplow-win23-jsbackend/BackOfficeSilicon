@@ -14,12 +14,22 @@
             background-color: var(--color-gray-001);
             display: grid;
             grid-template-columns: repeat(10, 10%);
+
+            .button-box {
+                display: flex;
+                gap: 5px;
+            }
         }
 
         .content-item-light {
             background-color: var(--color-gray-100);
             display: grid;
             grid-template-columns: repeat(10, 10%);
+
+            .button-box {
+                display: flex;
+                gap: 5px;
+            }
         }
 
         .red {
@@ -30,26 +40,9 @@
             color: $success;
         }
 
+
+
         .conten-item-email {
-            box-sizing: border-box;
-            max-width: 100%;
-            word-break: break-all;
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-            overflow: auto;
-            white-space: normal;
-            hyphens: auto;
-            overflow-x: hidden;
-
-            p {
-
-                word-break: break-all;
-                overflow-wrap: break-word;
-                overflow: auto;
-                white-space: normal;
-                hyphens: auto;
-                overflow-x: hidden;
-            }
         }
     }
 }
