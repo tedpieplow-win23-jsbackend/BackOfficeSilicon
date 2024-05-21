@@ -1,9 +1,7 @@
 ﻿@page "/"
-@page "/signin"
+@attribute [AllowAnonymous]
 
 @using System.ComponentModel.DataAnnotations
-@using BackOfficeSilicon.Data
-@using BackOfficeSilicon.Models
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc
@@ -15,6 +13,7 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject AuthenticationStateProvider Stateprovider
 @inject UserManager<ApplicationUser> UserManager
+@inject UserService UserService
 
 <PageTitle>Log in</PageTitle>
 
@@ -80,6 +79,10 @@
     {
         try
         {
+            var userClaims = await UserService.GetUserClaimsAsync();
+            if (SignInManager.IsSignedIn(userClaims))
+                NavigationManager.NavigateTo("/backoffice");
+
             var httpContext = HttpContextAccessor.HttpContext;
             if (HttpContext is not null)
             {
@@ -99,13 +102,24 @@
     [ValidateAntiForgeryToken]
     private async Task SignIn()
     {
-        var result = await SignInManager.PasswordSignInAsync(SignInForm.Email, SignInForm.Password, SignInForm.RememberMe, false);
+        var user = await UserManager.FindByEmailAsync(SignInForm.Email);
+        if(user != null)
+        {
+            var userRoles = await UserManager.GetRolesAsync(user);
+            if (userRoles.Any(role => role == "SuperUser" || role == "Administrator" || role == "Author"))
+            {
+                var result = await SignInManager.PasswordSignInAsync(SignInForm.Email, SignInForm.Password, false, false);
 
-        if (result.Succeeded)
-            NavigationManager.NavigateTo("/", true);
-        else
-            StatusMessage = "Failed to login, please try again";
+                if (result.Succeeded)
+                    NavigationManager.NavigateTo("/backoffice", true);
+                else
+                    StatusMessage = "Failed to login, please try again";
+            }
+            StatusMessage = "You do not have the required permissions to view the Backoffice.";
 
-        return;
+            return;
+        }
+
+        StatusMessage = "Could not find an admin with that email.";
     }
 }

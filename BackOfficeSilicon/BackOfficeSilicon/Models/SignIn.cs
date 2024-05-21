@@ -15,8 +15,5 @@ namespace BackOfficeSilicon.Models
         [MinLength(2, ErrorMessage = "Not valid.")]
         [DataType(DataType.Password)]
         public string Password { get; set; } = null!;
-
-        [Display(Name = "RememberMe", Order = 2)]
-        public bool RememberMe { get; set; }
     }
 }

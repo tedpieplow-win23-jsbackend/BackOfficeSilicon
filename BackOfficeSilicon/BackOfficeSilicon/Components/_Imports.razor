@@ -1,5 +1,6 @@
 ﻿@using System.Net.Http
 @using System.Net.Http.Json
+@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
@@ -11,7 +12,11 @@
 @using BackOfficeSilicon.Client
 @using BackOfficeSilicon.Components
 @using BackOfficeSilicon.Components.BackOffice
+@using BackOfficeSilicon.Data
+@using BackOfficeSilicon.Models
+@using BackOfficeSilicon.Services
 @using Newtonsoft.Json
 @using Blazored.Modal
 @using Blazored.Modal.Services
+@attribute [Authorize]
 @inject HttpClient Http
