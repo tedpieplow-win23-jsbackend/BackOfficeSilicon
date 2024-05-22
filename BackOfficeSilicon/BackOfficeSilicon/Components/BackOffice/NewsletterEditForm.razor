@@ -3,7 +3,9 @@
 @using BackOfficeSilicon.Services
 @inject NewsletterService newsletterService
 @inject NavigationManager NavigationManager
+
 @rendermode InteractiveServer
+
 <div class="container newsletter-form">
     <h3>@SubscribeForm.Email</h3>
     <EditForm FormName="subscribeform" Model="SubscribeForm" OnValidSubmit="OnSubmit" id="subscribe-form" method="post" novalidate>
@@ -39,7 +41,6 @@
             </div>
         </div>
         <div class="subscribe">
-@*             <p>@SubscribeForm.Email</p> *@
             <button id="submit-button" type="submit" class="btn-theme"><span>Update</span></button>
             <button class="btn-red" @onclick="Cancel">Cancel</button>
         </div>
@@ -70,11 +71,9 @@
     }
     public async Task OnSubmit()
     {
-
             var result = await newsletterService.UpdateSubscriberAsync(SubscribeForm);
             if (result)
                 await OnClick.InvokeAsync("");
-                NavigationManager.NavigateTo("/backoffice?string=newsletter");
     }
     public async Task Cancel()
     {

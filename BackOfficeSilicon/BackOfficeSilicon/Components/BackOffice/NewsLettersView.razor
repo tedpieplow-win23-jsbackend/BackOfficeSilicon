@@ -1,5 +1,7 @@
 ﻿@inject IdentityRedirectManager RedirectManager
 @inject NavigationManager NavigationManager
+@inject IConfiguration Configuration
+@inject NewsletterService NewsletterService
 @using System.Text
 @using BackOfficeSilicon.Components.Account
 @using BackOfficeSilicon.Models
@@ -13,19 +15,6 @@
     <div class="options-bar">
     </div>
     <div class="content-box">
-@*         <div class="content-item-dark column-titles">
-            <p>Delete Update</p>
-            <p>Is subscribed</p>
-            <p>Daily newsletter</p>
-            <p>Advertising updates</p>
-            <p>Week in review</p>
-            <p>Event updates</p>
-            <p>Startups weekly</p>
-            <p>Podcasts</p>
-
-            <p>Email</p>
-        </div> *@
-
         <QuickGrid Items="List.AsQueryable()" Class="quickgrid-table">
 
             <PropertyColumn Property="l => l.Email" Title ="Email" Sortable="true"/>
@@ -57,29 +46,6 @@
                 <button class="btn-theme" @onclick="() => Update(context.Email)"><i class="fa-solid fa-pen"></i></button>
             </TemplateColumn>
         </QuickGrid>
-
-@*         @{int i = 0;}
-        @foreach (var item in List)
-        {
-            <div class="@GetItemClass()">
-                <div class="button-box">
-                    <button class="btn-red" @onclick="() => DeleteAsync(item.Email)"><i class="fa-solid fa-trash"></i></button>
-                    <button class="btn-theme" @onclick="() => Update(item.Email)"><i class="fa-solid fa-pen"></i></button>
-                </div>
-                <p><i class="fa-solid @GetIcon(item.IsSubscribed)"></i></p>
-                <p><i class="fa-solid @GetIcon(item.DailyNewsLetter)"></i></p>
-                <p><i class="fa-solid @GetIcon(item.AdvertisingUpdates)"></i></p>
-                <p><i class="fa-solid @GetIcon(item.WeekInReviews)"></i></p>
-                <p><i class="fa-solid @GetIcon(item.EventUpdates)"></i></p>
-                <p><i class="fa-solid @GetIcon(item.StartupsWeekly)"></i></p>
-                <p><i class="fa-solid @GetIcon(item.Podcasts)"></i></p>
-                <div class="content-item-email">
-                    <p>@item.Email</p>
-                </div>
-            </div>
-            IsDark = (i % 2 == 0);
-            i++;
-        } *@
     </div>
 </div>
 @code {
@@ -94,7 +60,7 @@
     {
         try
         {
-            var result = await GetSubscribersAsync();
+            var result = await NewsletterService.GetSubscribersAsync();
             List = result;
         }
         catch (Exception) { }
@@ -104,43 +70,22 @@
     public async Task Update(string Email)
     {
         await OnClick.InvokeAsync(Email);
-        // NavigationManager.NavigateTo($"/newsletter/edit?Email={Email}");
-        // return Task.CompletedTask;
     } 
 
 
     private async Task DeleteAsync(string email)
     {
 
-        var json = JsonConvert.SerializeObject(new { Email = email });
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-        var response = await Http.PostAsync("https://subscriptionprovider-silicon.azurewebsites.net/api/DeleteSubscriptionFunction?code=3wlaFTtqNVe95fdX25jr896B8mZY72fmJIcxAcb0cl9xAzFu_GqyCg%3D%3D", content);
+        // var json = JsonConvert.SerializeObject(new { Email = email });
+        // var content = new StringContent(json, Encoding.UTF8, "application/json");
+        // var response = await Http.PostAsync(Configuration.GetConnectionString("DeleteNewsletterProvider"), content);
 
-        var result = await GetSubscribersAsync();
+        // var result = await NewsletterService.GetSubscribersAsync();
+        var result = await NewsletterService.DeleteAsync(email);
         if (result != null && result.Any())
         {
             List = result;
             StateHasChanged();
         }
-    }
-
-
-
-    public async Task<IEnumerable<NewsletterModel>> GetSubscribersAsync()
-    {
-        try
-        {
-            var result = await Http.PostAsync("https://subscriptionprovider-silicon.azurewebsites.net/api/GetSubscribersFunction?code=VdUem1ardDpuXjfbHNodWR6NRuTneq6ZTFo3n_8r7fHZAzFutbdzXA==", null);
-            if (result.IsSuccessStatusCode)
-            {
-                var list = await result.Content.ReadFromJsonAsync<IEnumerable<NewsletterModel>>();
-                if(list!.Any())
-                    return list!;
-            }
-        }
-        catch(Exception ex)
-        {
-        }
-        return null!;
     }
 }
