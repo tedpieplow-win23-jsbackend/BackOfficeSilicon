@@ -3,28 +3,32 @@
 @inject AdminService AdminService
 @inject ILogger<AdministratorsView> Logger
 
-@rendermode InteractiveAuto
+@rendermode InteractiveServer
 
 <div class="container admin-view">
+    <button id="create-admin-button" class="btn-theme" @onclick="() => CreateAdmin()"><i class="fa-solid fa-pen"></i> Create new admin</button>
     <QuickGrid Items="AdminList.AsQueryable()" Class="quickgrid-table">
         <PropertyColumn Property="l => l.Email" Title="Email" Sortable="true" />
         <PropertyColumn Property="l => l.FirstName" Title="First Name" />
         <PropertyColumn Property="l => l.LastName" Title="Last Name" />
         <TemplateColumn Title="Role">
-            <select name="roles" id="role-select" @onchange="@((ChangeEventArgs e) => NewRole = e.Value!.ToString())">
+            <select name="roles" id="role-select" @onchange="@((ChangeEventArgs e) => context.NewRole = e.Value!.ToString())">
                 <option value=@(context.Role)>@(context.Role)</option>
                 <option class="@DisplayRole(context.Role, "SuperUser")" value="SuperUser">Super User</option>
                 <option class="@DisplayRole(context.Role, "Administrator")" value="Administrator">Administrator</option>
                 <option class="@DisplayRole(context.Role, "Author")" value="Author">Author</option>
                 <option class="@DisplayRole(context.Role, "User")" value="User">User</option>
             </select>
-            @if(NewRole != null)
+            @if(context.NewRole != null)
             {
-                <button class="btn-theme" @onclick="async () => await UpdateRoleAsync(context, NewRole)"><i class="fa-solid fa-floppy-disk"></i></button>
+                <button class="btn-theme" @onclick="async () => await UpdateRoleAsync(context)"><i class="fa-solid fa-floppy-disk"></i></button>
             }
         </TemplateColumn>
         <TemplateColumn Title="Update">
             <button class="btn-theme" @onclick="() => UpdateAdmin(context.Email)"><i class="fa-solid fa-pen"></i></button>
+        </TemplateColumn>
+        <TemplateColumn Title="Delete">
+            <button class="btn-red" @onclick="() => DeleteAdmin(context)"><i class="fa-solid fa-trash"></i></button>
         </TemplateColumn>
     </QuickGrid>
 </div>
@@ -34,31 +38,46 @@
     [Parameter]
     public EventCallback<string> OnClick { get; set; }
 
-    private string? NewRole { get; set; }
-
     private List<AdministratorModel> AdminList { get; set; } = [];
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
         AdminList = await AdminService.PopulateAdminListAsync();
     }
 
     public string DisplayRole(string currentRole, string optionValue) => (currentRole == optionValue) ? "d-none" : "";
 
-    public async Task UpdateRoleAsync(AdministratorModel model, string newRole)
+    public async Task UpdateRoleAsync(AdministratorModel model)
     {
         var admin = await UserManager.FindByEmailAsync(model.Email);
         await UserManager.RemoveFromRoleAsync(admin!, model.Role);
-        await UserManager.AddToRoleAsync(admin!, newRole);
-        model.Role = newRole;
-        NewRole = null!;
+        await UserManager.AddToRoleAsync(admin!, model.NewRole!);
+        model.Role = model.NewRole!;
+        model.NewRole = null!;
 
         await InvokeAsync(() => StateHasChanged());
     }
 
-    public async Task UpdateAdmin(string Email)
+    public async Task UpdateAdmin(string email)
     {
-        await OnClick.InvokeAsync(Email);
+        await OnClick.InvokeAsync(email);
+    }
+
+    public async Task CreateAdmin()
+    {
+        await OnClick.InvokeAsync("Create");
+    }
+
+    public async Task DeleteAdmin(AdministratorModel model)
+    {
+        var admin = await UserManager.FindByEmailAsync(model.Email);
+        var deleteResult = await UserManager.DeleteAsync(admin!);
+
+        if (deleteResult.Succeeded)
+        {
+            AdminList.Remove(model);
+            await InvokeAsync(() => StateHasChanged());
+        }
     }
 
 }

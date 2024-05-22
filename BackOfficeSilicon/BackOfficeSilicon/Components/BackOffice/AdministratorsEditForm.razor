@@ -1,8 +1,10 @@
-﻿@inject UserService UserService
+﻿@inject AdminService AdminService
 @inject UserManager<ApplicationUser> UserManager
 @inject ILogger<AdministratorsView> Logger
 
-<div class="container administrators-form">
+@rendermode InteractiveServer
+
+<div class="container">
     @if (!string.IsNullOrEmpty(StatusMessage))
     {
         <div class="alert alert-danger w-50 text-lg-center">
@@ -11,26 +13,26 @@
     }
     <EditForm FormName="administrators" Model="AdminModel" OnValidSubmit="UpdateAdmin" id="admin-form" method="post" novalidate>
         <DataAnnotationsValidator />
-        <div class="checkbox-content">
-            <div class="checkboxes">
+        <div class="admin-content">
+            <div class="inputs">
                 <div class="box">
-                    <InputText @bind-Value="AdminModel.Email" type="email"/>
                     <label>Email</label>
+                    <InputText @bind-Value="AdminModel.Email" type="email"/>
                     <ValidationMessage For="() => AdminModel.Email" class="text-danger" />
                 </div>
                 <div class="box">
+                    <label>First Name</label>
                     <InputText @bind-Value="AdminModel.FirstName" />
-                    <label>FirstName</label>
                 </div>
                 <div class="box">
+                    <label>Last Name</label>
                     <InputText @bind-Value="AdminModel.LastName" />
-                    <label>LastName</label>
                 </div>
             </div>
         </div>
-        <div class="buttons">
-            <button id="submit-button" type="submit" class="btn-theme"><span>Update</span></button>
-            <button @onclick="Cancel" class="btn-theme"><span>Cancel</span></button>
+        <div class="admin-buttons">
+            <button type="submit" class="btn-theme"><span>Update</span></button>
+            <button @onclick="Cancel" class="btn-gray"><span>Cancel</span></button>
         </div>
     </EditForm>
 </div>
@@ -53,7 +55,7 @@
     {
         try
         {
-            Admin = await UserManager.FindByEmailAsync(Email!);
+            Admin = await UserManager.FindByEmailAsync(Email!)!;
             AdminModel.Email = Admin!.Email!;
             AdminModel.FirstName = Admin.FirstName;
             AdminModel.LastName = Admin.LastName;
@@ -66,11 +68,7 @@
 
     public async Task UpdateAdmin()
     {
-        Admin.Email = AdminModel.Email;
-        Admin.FirstName = AdminModel.FirstName;
-        Admin.LastName = AdminModel.LastName;
-
-        var updateResult = await UserManager.UpdateAsync(Admin);
+        var updateResult = await AdminService.UpdateAdminAsync(Admin, AdminModel);
         if (updateResult.Succeeded)
             await OnClick.InvokeAsync("");
 

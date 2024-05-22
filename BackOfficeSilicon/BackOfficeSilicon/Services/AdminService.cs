@@ -13,7 +13,6 @@ public class AdminService(UserManager<ApplicationUser> userManager, ILogger<Admi
     {
         try
         {
-            var adminModel = new AdministratorModel();
             var admins = _userManager.Users.ToList();
             var adminList = new List<AdministratorModel>();
 
@@ -21,6 +20,7 @@ public class AdminService(UserManager<ApplicationUser> userManager, ILogger<Admi
             {
                 foreach (var admin in admins)
                 {
+                    var adminModel = new AdministratorModel();
                     var userRole = await _userManager.GetRolesAsync(admin);
 
                     adminModel.Email = admin.Email!;
@@ -39,5 +39,33 @@ public class AdminService(UserManager<ApplicationUser> userManager, ILogger<Admi
             _logger.LogError(ex.Message);
             return null!;
         }
+    }
+
+    public async Task<IdentityResult> UpdateAdminAsync(ApplicationUser admin, AdministratorModel model)
+    {
+        try
+        {
+            admin.Email = model.Email;
+            admin.FirstName = model.FirstName;
+            admin.LastName = model.LastName;
+
+            return await _userManager.UpdateAsync(admin);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return IdentityResult.Failed();
+        }
+    }
+
+    public ApplicationUser PopulateAdmin(AdministratorModel model) 
+    {
+        return new ApplicationUser
+        {
+            Email = model.Email,
+            FirstName = model.FirstName,
+            LastName = model.LastName,
+            UserName = model.Email,
+        };
     }
 }
