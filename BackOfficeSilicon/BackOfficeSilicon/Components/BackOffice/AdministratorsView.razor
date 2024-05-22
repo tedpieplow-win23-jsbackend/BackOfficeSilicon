@@ -1,54 +1,44 @@
-﻿<div class="container administrators-form">
-    <EditForm FormName="administrators" Model="AdminModel" OnValidSubmit="Update" id="admin-form" method="post" novalidate>
-        <DataAnnotationsValidator />
-        <div class="checkbox-content">
-            <div class="checkboxes">
-                <div class="box">
-                    <InputText @bind-Value="User.Email" />
-                    <label>Email</label>
-                </div>
-                <div class="box">
-                    <InputText @bind-Value="User.Email" />
-                    <label>Email</label>
-                </div>
-                <div class="box">
-                    <InputText @bind-Value="User.Email" />
-                    <label>Email</label>
-                </div>
-                <div class="box">
-                        <InputText @bind-Value="User.Email" />
-                        <label>Email</label>
-                </div>
-                <div class="box">
-                        <InputText @bind-Value="User.Email" />
-                        <label>Email</label>
-                </div>
-                <div class="box">
-                        <InputText @bind-Value="User.Email" />
-                        <label>Email</label>
-                </div>
-                <div class="box">
-                        <InputText @bind-Value="User.Email" />
-                        <label>Email</label>
-                </div>
-            </div>
-        </div>
-        <div class="subscribe">
-@*             <InputText @bind-Value="SubscribeForm.Email" id="input-email" type="email" placeholder="Your Email" />
-            <button id="submit-button" type="submit" class="btn-theme"><span>Update</span></button>
-            <ValidationMessage For="() => SubscribeForm.Email" class="text-danger" /> *@
-        </div>
-    </EditForm>
-</div>
+﻿@inject UserService UserService
+@inject UserManager<ApplicationUser> UserManager
+@inject ILogger<AdministratorsView> Logger
+
+<QuickGrid Items="AdminList.AsQueryable()">
+    <PropertyColumn Property="l => l.Email" Title="Email" Sortable="true" />
+    <PropertyColumn Property="l => l.FirstName" Title="FirstName" />
+    <PropertyColumn Property="l => l.LastName" Title="LastName" />
+    <PropertyColumn Property="l => l.Role" Title="Roles" />
+</QuickGrid>
+
 @code {
-    [CascadingParameter]
-    private ApplicationUser User { get; set; } = null!;
 
-    [SupplyParameterFromForm]
-    private AdministratorModel AdminModel { get; set; } = default!;
+    private AdministratorModel AdminModel { get; set; } = new();
 
-    public void Update()
+    private List<AdministratorModel> AdminList { get; set; } = [];
+
+    protected override async void OnInitialized()
     {
-        
+        try
+        {
+            var admins = UserManager.Users.ToList();
+
+            if (admins.Count != 0)
+            {
+                foreach (var admin in admins)
+                {
+                    var roleList = await UserManager.GetRolesAsync(admin);
+
+                    AdminModel.Email = admin.Email!;
+                    AdminModel.FirstName = admin.FirstName;
+                    AdminModel.LastName = admin.LastName;
+                    AdminModel.Role = roleList.FirstOrDefault()!;
+
+                    AdminList.Add(AdminModel);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex.Message);
+        }
     }
 }
