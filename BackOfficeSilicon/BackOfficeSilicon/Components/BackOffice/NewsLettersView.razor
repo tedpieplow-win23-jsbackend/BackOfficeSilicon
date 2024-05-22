@@ -75,12 +75,6 @@
 
     private async Task DeleteAsync(string email)
     {
-
-        // var json = JsonConvert.SerializeObject(new { Email = email });
-        // var content = new StringContent(json, Encoding.UTF8, "application/json");
-        // var response = await Http.PostAsync(Configuration.GetConnectionString("DeleteNewsletterProvider"), content);
-
-        // var result = await NewsletterService.GetSubscribersAsync();
         var result = await NewsletterService.DeleteAsync(email);
         if (result != null && result.Any())
         {
