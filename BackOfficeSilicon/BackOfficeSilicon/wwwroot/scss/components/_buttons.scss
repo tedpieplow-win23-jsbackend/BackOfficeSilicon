@@ -32,6 +32,7 @@
     padding-bottom: 13px;
 
     &:hover {
+        transition: ease-in-out 0.5s;
         @include theme-secondary-shadow;
         text-decoration: none;
         background: $gray-700;
@@ -46,6 +47,7 @@
     border: none;
 
     &:hover {
+        transition: ease-in-out 0.5s;
         text-decoration: none;
         background: $gray-700;
         color: $white;
@@ -150,6 +152,7 @@
     color: $gray-300;
 
     &:hover {
+        transition: ease-in-out 0.5s;
         text-decoration: none;
         background: $theme;
         color: $white;

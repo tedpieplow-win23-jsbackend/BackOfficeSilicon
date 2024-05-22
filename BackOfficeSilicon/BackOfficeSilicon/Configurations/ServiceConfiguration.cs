@@ -28,6 +28,7 @@ public static class ServiceConfiguration
         services.AddScoped<NewsletterService>();
         services.AddScoped<UserService>();
         services.AddScoped<CookieEvents>();
+        services.AddScoped<AdminService>();
 
         services.AddBlazoredModal();
 

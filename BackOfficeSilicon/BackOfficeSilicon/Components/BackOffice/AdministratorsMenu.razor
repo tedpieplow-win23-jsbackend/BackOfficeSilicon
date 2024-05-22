@@ -1,0 +1,26 @@
+﻿@rendermode InteractiveServer
+
+@if (string.IsNullOrEmpty(ComponentSelector))
+{
+    <AdministratorsView OnClick="RenderClickedPage" />
+}
+else if(ComponentSelector == "Create")
+{
+    <AdministratorsCreateForm OnClick="RenderClickedPage" />
+}
+else
+{
+    <AdministratorsEditForm OnClick="RenderClickedPage" Email="@ComponentSelector"/>
+}
+
+@code {
+    [Parameter]
+    public string? SuppliedString { get; set; }
+    private string ComponentSelector = "";
+
+    private void RenderClickedPage(string SuppliedString)
+    {
+        ComponentSelector = SuppliedString;
+        StateHasChanged();
+    }
+}

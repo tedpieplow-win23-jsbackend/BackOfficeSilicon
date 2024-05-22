@@ -1,0 +1,31 @@
+#admin-form {
+    padding: 2rem;
+
+    .admin-content {
+        margin-bottom: 3rem;
+
+        .inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+
+            .box {
+                display: flex;
+                flex-direction: column;
+
+                input {
+                    width: 25%;
+                }
+
+                select {
+                    width: 25%;
+                }
+            }
+        }
+    }
+
+    .admin-buttons {
+        display: flex;
+        gap: 6.3rem;
+    }
+}

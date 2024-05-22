@@ -1,0 +1,87 @@
+﻿@inject AdminService AdminService
+@inject UserManager<ApplicationUser> UserManager
+@inject ILogger<AdministratorsView> Logger
+
+@rendermode InteractiveServer
+
+<div class="container">
+    @if (!string.IsNullOrEmpty(StatusMessage))
+    {
+        <div class="alert alert-danger w-50 text-lg-center">
+            @StatusMessage
+        </div>
+    }
+    <EditForm FormName="administrators" Model="AdminModel" OnValidSubmit="CreateAdmin" id="admin-form" method="post" novalidate>
+        <DataAnnotationsValidator />
+        <div class="admin-content">
+            <div class="inputs">
+                <div class="box">
+                    <label>First Name</label>
+                    <InputText @bind-Value="AdminModel.FirstName" />
+                </div>
+                <div class="box">
+                    <label>Last Name</label>
+                    <InputText @bind-Value="AdminModel.LastName" />
+                </div>
+                <div class="box">
+                    <label>Email</label>
+                    <InputText @bind-Value="AdminModel.Email" type="email" />
+                    <ValidationMessage For="() => AdminModel.Email" class="text-danger" />
+                </div>
+                <div class="box">
+                    <select name="roles" id="role-select" @onchange="@((ChangeEventArgs e) => NewRole = e.Value!.ToString())">
+                        <option value="">Select a role</option>
+                        <option value="SuperUser">Super User</option>
+                        <option value="Administrator">Administrator</option>
+                        <option value="Author">Author</option>
+                        <option value="User">User</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="admin-buttons">
+            <button type="submit" class="btn-theme"><span>Create</span></button>
+            <button @onclick="Cancel" class="btn-gray"><span>Cancel</span></button>
+        </div>
+    </EditForm>
+</div>
+@code {
+
+    private string? NewRole { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnClick { get; set; }
+
+    [SupplyParameterFromQuery]
+    private string? StatusMessage { get; set; }
+
+    [SupplyParameterFromForm]
+    private AdministratorModel AdminModel { get; set; } = new();
+
+    private ApplicationUser Admin { get; set; } = null!;
+
+    public async Task CreateAdmin()
+    {
+        if (!string.IsNullOrEmpty(NewRole))
+        {
+            Admin = AdminService.PopulateAdmin(AdminModel);
+
+            var createResult = await UserManager.CreateAsync(Admin);
+            if (createResult.Succeeded)
+            {
+                var roleResult = await UserManager.AddToRoleAsync(Admin, NewRole);
+                if (roleResult.Succeeded)
+                    await OnClick.InvokeAsync("");
+            }
+
+            StatusMessage = "Failed to create, please try again.";
+        }
+
+        StatusMessage = "Failed to create, check all the fields.";
+    }
+
+    public async Task Cancel()
+    {
+        await OnClick.InvokeAsync("");
+    }
+}

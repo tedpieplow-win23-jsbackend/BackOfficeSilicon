@@ -1,48 +1,64 @@
-﻿@inject UserService UserService
+﻿@inject AdminService AdminService
 @inject UserManager<ApplicationUser> UserManager
 @inject ILogger<AdministratorsView> Logger
 
-<div class="container administrators-form">
+@rendermode InteractiveServer
+
+<div class="container">
+    @if (!string.IsNullOrEmpty(StatusMessage))
+    {
+        <div class="alert alert-danger w-50 text-lg-center">
+            @StatusMessage
+        </div>
+    }
     <EditForm FormName="administrators" Model="AdminModel" OnValidSubmit="UpdateAdmin" id="admin-form" method="post" novalidate>
         <DataAnnotationsValidator />
-        <div class="checkbox-content">
-            <div class="checkboxes">
+        <div class="admin-content">
+            <div class="inputs">
                 <div class="box">
-                    <InputText @bind-Value="AdminModel.Email" />
                     <label>Email</label>
+                    <InputText @bind-Value="AdminModel.Email" type="email"/>
+                    <ValidationMessage For="() => AdminModel.Email" class="text-danger" />
                 </div>
                 <div class="box">
+                    <label>First Name</label>
                     <InputText @bind-Value="AdminModel.FirstName" />
-                    <label>FirstName</label>
                 </div>
                 <div class="box">
+                    <label>Last Name</label>
                     <InputText @bind-Value="AdminModel.LastName" />
-                    <label>LastName</label>
-                </div>
-                <div class="box">
-                    <InputText @bind-Value="AdminModel.Role" />
-                    <label>LastName</label>
                 </div>
             </div>
         </div>
-        <div class="subscribe">
-            @*             <InputText @bind-Value="SubscribeForm.Email" id="input-email" type="email" placeholder="Your Email" />
-            <button id="submit-button" type="submit" class="btn-theme"><span>Update</span></button>
-            <ValidationMessage For="() => SubscribeForm.Email" class="text-danger" /> *@
+        <div class="admin-buttons">
+            <button type="submit" class="btn-theme"><span>Update</span></button>
+            <button @onclick="Cancel" class="btn-gray"><span>Cancel</span></button>
         </div>
     </EditForm>
 </div>
 @code {
+    [Parameter]
+    public EventCallback<string> OnClick { get; set; }
+
+    [Parameter]
+    public string? Email { get; set; }
+
+    [SupplyParameterFromQuery]
+    private string? StatusMessage { get; set; }
 
     [SupplyParameterFromForm]
-    private AdministratorModel AdminModel { get; set; } = default!;
+    private AdministratorModel AdminModel { get; set; } = new();
 
-    private List<string> RolesList = ["SuperUser", "Administrator", "Author", "User"];
+    private ApplicationUser Admin { get; set; } = null!;
 
-    protected override async void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         try
         {
+            Admin = await UserManager.FindByEmailAsync(Email!)!;
+            AdminModel.Email = Admin!.Email!;
+            AdminModel.FirstName = Admin.FirstName;
+            AdminModel.LastName = Admin.LastName;
         }
         catch (Exception ex)
         {
@@ -52,6 +68,15 @@
 
     public async Task UpdateAdmin()
     {
+        var updateResult = await AdminService.UpdateAdminAsync(Admin, AdminModel);
+        if (updateResult.Succeeded)
+            await OnClick.InvokeAsync("");
 
+        StatusMessage = "Failed to update.";
+    }
+
+    public async Task Cancel()
+    {
+        await OnClick.InvokeAsync(""); 
     }
 }
