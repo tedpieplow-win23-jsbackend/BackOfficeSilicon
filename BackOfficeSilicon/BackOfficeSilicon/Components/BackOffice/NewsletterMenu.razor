@@ -2,14 +2,11 @@
 
 @if (string.IsNullOrEmpty(EmailCheck))
 {
-
     <NewsLettersView OnClick="RenderClickedPage"/>
 }
 else {
     <NewsletterEditForm OnClick="RenderClickedPage" Email="@EmailCheck" />
 }
-    
-
 
 @code {
     [Parameter]

@@ -46,7 +46,38 @@
         }
     }
 }
+.quickgrid-table tr:nth-child(even) {
+    background-color: var(--color-gray-100);
+}
 
-.newsletter-form{
+.newsletter-form {
 
+    h3 {
+        color: var(--color-gray-800);
+        text-align: center;
+    }
+
+    #subscribe-form {
+
+        .checkboxes {
+            display: flex;
+            margin: 20px 0;
+            justify-content: center;
+            gap: 20px;
+
+            .box {
+                display: flex;
+                flex-direction: column-reverse;
+            }
+        }
+
+        .subscribe {
+            display: flex;
+            justify-content: space-evenly;
+
+            .btn-red {
+                padding: 15px 50px;
+            }
+        }
+    }
 }

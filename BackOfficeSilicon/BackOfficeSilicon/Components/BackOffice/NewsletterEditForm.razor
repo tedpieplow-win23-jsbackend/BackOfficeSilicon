@@ -5,47 +5,46 @@
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 <div class="container newsletter-form">
+    <h3>@SubscribeForm.Email</h3>
     <EditForm FormName="subscribeform" Model="SubscribeForm" OnValidSubmit="OnSubmit" id="subscribe-form" method="post" novalidate>
         <DataAnnotationsValidator />
-        <div class="checkbox-content">
-            <div class="checkboxes">
-                <div class="box">
-                    <InputCheckbox @bind-Value="SubscribeForm.IsSubscribed" />
-                    <label>Is Subscribed</label>
-                </div>
-                <div class="box">
-                    <InputCheckbox @bind-Value="SubscribeForm.AdvertisingUpdates" />
-                    <label>Advertising Updates</label>
-                </div>
-                <div class="box">
-                    <InputCheckbox @bind-Value="SubscribeForm.DailyNewsLetter" />
-                    <label>Daily newsletter</label>
-                </div>
-                <div class="box">
-                    <InputCheckbox @bind-Value="SubscribeForm.EventUpdates" />
-                    <label>Event Updates</label>
-                </div>
-                <div class="box">
-                    <InputCheckbox @bind-Value="SubscribeForm.Podcasts" />
-                    <label>Podcasts</label>
-                </div>
-                <div class="box">
-                    <InputCheckbox @bind-Value="SubscribeForm.StartupsWeekly" />
-                    <label>Startups Weekly</label>
-                </div>
-                <div class="box">
-                    <InputCheckbox @bind-Value="SubscribeForm.WeekInReviews" />
-                    <label>Week In Reviews</label>
-                </div>
+        <div class="checkboxes">
+            <div class="box">
+                <InputCheckbox @bind-Value="SubscribeForm.IsSubscribed" />
+                <label>Is Subscribed</label>
+            </div>
+            <div class="box">
+                <InputCheckbox @bind-Value="SubscribeForm.AdvertisingUpdates" />
+                <label>Advertising Updates</label>
+            </div>
+            <div class="box">
+                <InputCheckbox @bind-Value="SubscribeForm.DailyNewsLetter" />
+                <label>Daily newsletter</label>
+            </div>
+            <div class="box">
+                <InputCheckbox @bind-Value="SubscribeForm.EventUpdates" />
+                <label>Event Updates</label>
+            </div>
+            <div class="box">
+                <InputCheckbox @bind-Value="SubscribeForm.Podcasts" />
+                <label>Podcasts</label>
+            </div>
+            <div class="box">
+                <InputCheckbox @bind-Value="SubscribeForm.StartupsWeekly" />
+                <label>Startups Weekly</label>
+            </div>
+            <div class="box">
+                <InputCheckbox @bind-Value="SubscribeForm.WeekInReviews" />
+                <label>Week In Reviews</label>
             </div>
         </div>
         <div class="subscribe">
-            <p>@SubscribeForm.Email</p>
+@*             <p>@SubscribeForm.Email</p> *@
             <button id="submit-button" type="submit" class="btn-theme"><span>Update</span></button>
-            <ValidationMessage For="() => SubscribeForm.Email" class="text-danger" />
+            <button class="btn-red" @onclick="Cancel">Cancel</button>
         </div>
     </EditForm>
-    <button class="btn-red" @onclick="Cancel">Cancel</button>
+
 </div>
 @code {
     [SupplyParameterFromForm]

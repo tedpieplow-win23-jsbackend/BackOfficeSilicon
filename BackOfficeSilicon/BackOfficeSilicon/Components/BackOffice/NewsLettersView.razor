@@ -3,17 +3,17 @@
 @using System.Text
 @using BackOfficeSilicon.Components.Account
 @using BackOfficeSilicon.Models
+@using Microsoft.AspNetCore.Components.QuickGrid
 
 @rendermode InteractiveServer
 
-<h3>NewsLettersView</h3>
 <div class="container newsletter">
     <h1>Newsletter</h1>
 
     <div class="options-bar">
     </div>
     <div class="content-box">
-        <div class="content-item-dark column-titles">
+@*         <div class="content-item-dark column-titles">
             <p>Delete Update</p>
             <p>Is subscribed</p>
             <p>Daily newsletter</p>
@@ -24,9 +24,41 @@
             <p>Podcasts</p>
 
             <p>Email</p>
-        </div>
+        </div> *@
 
-        @{int i = 0;}
+        <QuickGrid Items="List.AsQueryable()" Class="quickgrid-table">
+
+            <PropertyColumn Property="l => l.Email" Title ="Email" Sortable="true"/>
+            <TemplateColumn Title="Is Subscribed">
+                <p><i class="fa-solid @GetIcon(context.IsSubscribed)"></i></p>
+            </TemplateColumn>
+            <TemplateColumn Title="Daily Newsletter">
+                <p><i class="fa-solid @GetIcon(context.DailyNewsLetter)"></i></p>
+            </TemplateColumn>
+            <TemplateColumn Title="Advertising Updates">
+                <p><i class="fa-solid @GetIcon(context.AdvertisingUpdates)"></i></p>
+            </TemplateColumn>
+            <TemplateColumn Title="Week In Reviews">
+                <p><i class="fa-solid @GetIcon(context.WeekInReviews)"></i></p>
+            </TemplateColumn>
+            <TemplateColumn Title="Event Updates">
+                <p><i class="fa-solid @GetIcon(context.EventUpdates)"></i></p>
+            </TemplateColumn>
+            <TemplateColumn Title="Startups Weekly">
+                <p><i class="fa-solid @GetIcon(context.StartupsWeekly)"></i></p>
+            </TemplateColumn>
+            <TemplateColumn Title="Podcasts">
+                <p><i class="fa-solid @GetIcon(context.Podcasts)"></i></p>
+            </TemplateColumn>
+            <TemplateColumn Title="Delete">
+                <button class="btn-red" @onclick="() => DeleteAsync(context.Email)"><i class="fa-solid fa-trash"></i></button>
+            </TemplateColumn>
+            <TemplateColumn Title="Update">
+                <button class="btn-theme" @onclick="() => Update(context.Email)"><i class="fa-solid fa-pen"></i></button>
+            </TemplateColumn>
+        </QuickGrid>
+
+@*         @{int i = 0;}
         @foreach (var item in List)
         {
             <div class="@GetItemClass()">
@@ -47,17 +79,14 @@
             </div>
             IsDark = (i % 2 == 0);
             i++;
-        }
+        } *@
     </div>
 </div>
 @code {
     [Parameter]
     public EventCallback<string> OnClick { get; set; }
-    [Parameter]
-    public bool IsDark { get; set; }
-    private string GetIcon(bool value) => value ? "fa-check green" : "fa-xmark red";
 
-    private string GetItemClass() => IsDark ? "content-item-dark" : "content-item-light";
+    private string GetIcon(bool value) => value ? "fa-check green" : "fa-xmark red";
 
     private IEnumerable<NewsletterModel> List { get; set; } = [];
 
@@ -70,6 +99,7 @@
         }
         catch (Exception) { }
     }
+
 
     public async Task Update(string Email)
     {

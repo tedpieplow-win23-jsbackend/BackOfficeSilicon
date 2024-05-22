@@ -878,3 +878,28 @@ header .container .btn-mobile {
 .newsletter .content-box .green {
   color: #22C55E;
 }
+.quickgrid-table tr:nth-child(even) {
+  background-color: var(--color-gray-100);
+}
+
+.newsletter-form h3 {
+  color: var(--color-gray-800);
+  text-align: center;
+}
+.newsletter-form #subscribe-form .checkboxes {
+  display: flex;
+  margin: 20px 0;
+  justify-content: center;
+  gap: 20px;
+}
+.newsletter-form #subscribe-form .checkboxes .box {
+  display: flex;
+  flex-direction: column-reverse;
+}
+.newsletter-form #subscribe-form .subscribe {
+  display: flex;
+  justify-content: space-evenly;
+}
+.newsletter-form #subscribe-form .subscribe .btn-red {
+  padding: 15px 50px;
+}
