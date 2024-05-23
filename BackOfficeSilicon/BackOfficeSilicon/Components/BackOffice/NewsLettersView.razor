@@ -18,26 +18,46 @@
         <QuickGrid Items="List.AsQueryable()" Class="quickgrid-table">
 
             <PropertyColumn Property="l => l.Email" Title ="Email" Sortable="true"/>
-            <TemplateColumn Title="Is Subscribed">
-                <p><i class="fa-solid @GetIcon(context.IsSubscribed)"></i></p>
+            <TemplateColumn Title="Subscribed">
+                <div class="center-content">
+                    <p><i class="fa-solid @GetIcon(context.IsSubscribed)"></i></p>
+                </div>
             </TemplateColumn>
-            <TemplateColumn Title="Daily Newsletter">
-                <p><i class="fa-solid @GetIcon(context.DailyNewsLetter)"></i></p>
+            <TemplateColumn Title="Daily">
+                <div class="center-content">
+                    <p><i class="fa-solid @GetIcon(context.DailyNewsLetter)"></i></p>
+
+                </div>
             </TemplateColumn>
-            <TemplateColumn Title="Advertising Updates">
-                <p><i class="fa-solid @GetIcon(context.AdvertisingUpdates)"></i></p>
+            <TemplateColumn Title="Advertising">
+                <div class="center-content">
+                    <p><i class="fa-solid @GetIcon(context.AdvertisingUpdates)"></i></p>
+
+                </div>
             </TemplateColumn>
-            <TemplateColumn Title="Week In Reviews">
-                <p><i class="fa-solid @GetIcon(context.WeekInReviews)"></i></p>
+            <TemplateColumn Title="Weekly">
+                <div class="center-content">
+                    <p><i class="fa-solid @GetIcon(context.WeekInReviews)"></i></p>
+
+                </div>
             </TemplateColumn>
-            <TemplateColumn Title="Event Updates">
-                <p><i class="fa-solid @GetIcon(context.EventUpdates)"></i></p>
+            <TemplateColumn Title="Event">
+                <div class="center-content">
+                    <p><i class="fa-solid @GetIcon(context.EventUpdates)"></i></p>
+
+                </div>
             </TemplateColumn>
-            <TemplateColumn Title="Startups Weekly">
-                <p><i class="fa-solid @GetIcon(context.StartupsWeekly)"></i></p>
+            <TemplateColumn Title="Startups">
+                <div class="center-content">
+                    <p><i class="fa-solid @GetIcon(context.StartupsWeekly)"></i></p>
+                </div>
+                
             </TemplateColumn>
             <TemplateColumn Title="Podcasts">
-                <p><i class="fa-solid @GetIcon(context.Podcasts)"></i></p>
+                <div class="center-content">
+                    <p><i class="fa-solid @GetIcon(context.Podcasts)"></i></p>
+                </div>
+                
             </TemplateColumn>
             <TemplateColumn Title="Delete">
                 <button class="btn-red" @onclick="() => DeleteAsync(context.Email)"><i class="fa-solid fa-trash"></i></button>
