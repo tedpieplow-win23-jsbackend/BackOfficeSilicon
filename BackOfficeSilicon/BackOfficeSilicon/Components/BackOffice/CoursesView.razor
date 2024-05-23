@@ -1,8 +1,11 @@
 ﻿@using BackOfficeSilicon.Models
 @inject IConfiguration Configuration
+@inject NavigationManager NavigationManager
 
 <div class="container courses-view">
-    <h3>CoursesView</h3>
+
+    <h1>CoursesView</h1>
+
     <button id="create-course-button" class="btn-theme" @onclick="CreateCourseAsync"><i class="fa-solid fa-pen"></i> Create new course</button>
 
     @if (courses != null && courses.Any())
@@ -61,16 +64,16 @@
 
     private async Task UpdateCourseAsync(string courseId)
     {
-        await OnClick.InvokeAsync();
+        NavigationManager.NavigateTo($"/editcourse/{courseId}");
     }
 
     private async Task DeleteCourseAsync(string courseId)
     {
         var query = new GraphQLQuery
-            {
-                Query = @" mutation deleteCourse($id: String!) { deleteCourses (id: $id)}",
-                Variables = new { id = courseId }
-            };
+        {
+            Query = @" mutation deleteCourse($id: String!) { deleteCourses (id: $id)}",
+            Variables = new { id = courseId }
+        };
 
         var response = await Http.PostAsJsonAsync(Configuration.GetValue<string>("ConnectionStrings:GetCoursesProvider"), query);
 

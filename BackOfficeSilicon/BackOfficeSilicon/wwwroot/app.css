@@ -942,3 +942,11 @@ header .container .btn-mobile {
   display: flex;
   gap: 6.3rem;
 }
+
+.courses-view {
+  margin-top: 50px;
+}
+.courses-view h1 {
+  margin-top: 100px;
+  color: var(--color-gray-900);
+}

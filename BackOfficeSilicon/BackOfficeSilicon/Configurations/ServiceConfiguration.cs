@@ -29,6 +29,7 @@ public static class ServiceConfiguration
         services.AddScoped<UserService>();
         services.AddScoped<CookieEvents>();
         services.AddScoped<AdminService>();
+        services.AddScoped<CourseService>();
 
         services.AddBlazoredModal();
 
