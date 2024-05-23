@@ -939,6 +939,13 @@ header .container .btn-mobile {
   background-color: var(--color-gray-600) !important;
 }
 
+.admin-view {
+  margin-top: 50px;
+}
+.admin-view h1 {
+  color: var(--color-gray-900);
+  margin-top: 100px;
+}
 .admin-view #create-admin-button {
   margin: 3rem 0;
 }

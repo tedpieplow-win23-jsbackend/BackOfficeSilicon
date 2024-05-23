@@ -1,5 +1,10 @@
 .admin-view {
+    margin-top: 50px;
 
+    h1{
+        color: var(--color-gray-900);
+        margin-top: 100px;
+    }
     #create-admin-button {
         margin: 3rem 0;
     }

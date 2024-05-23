@@ -6,6 +6,7 @@
 @rendermode InteractiveServer
 
 <div class="container admin-view">
+    <h1>Admins</h1>
     <button id="create-admin-button" class="btn-theme" @onclick="() => CreateAdmin()"><i class="fa-solid fa-pen"></i> Create new admin</button>
     <QuickGrid Items="AdminList.AsQueryable()" Class="quickgrid-table" Pagination="Pagination">
         <PropertyColumn Property="l => l.Email" Title="Email" Sortable="true" />
