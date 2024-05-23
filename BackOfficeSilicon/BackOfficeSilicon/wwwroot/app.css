@@ -627,6 +627,13 @@ header .container .btn-mobile {
   overflow: hidden;
 }
 
+.admin-presentation {
+  margin-left: 3rem;
+}
+.admin-presentation h4 {
+  color: white;
+}
+
 .nav-bar {
   display: flex;
   flex-direction: column;
