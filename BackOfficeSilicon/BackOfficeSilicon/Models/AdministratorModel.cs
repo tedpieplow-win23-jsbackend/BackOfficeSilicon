@@ -11,6 +11,10 @@ public class AdministratorModel
     public string FirstName { get; set; } = null!;
     public string LastName { get; set;} = null!;
     public string Role { get; set; } = null!;
-
     public string? NewRole { get; set; }
+
+    [DataType(DataType.Password)]
+    [Required(ErrorMessage = "Password is required")]
+    [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}$", ErrorMessage = "Password not strong enough")]
+    public string Password { get; set; } = null!;
 }

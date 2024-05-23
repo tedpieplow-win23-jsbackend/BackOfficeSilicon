@@ -29,6 +29,11 @@
                     <ValidationMessage For="() => AdminModel.Email" class="text-danger" />
                 </div>
                 <div class="box">
+                    <label>Password</label>
+                    <InputText @bind-Value="AdminModel.Password" type="password" />
+                    <ValidationMessage For="() => AdminModel.Password" class="text-danger" />
+                </div>
+                <div class="box">
                     <select name="roles" id="role-select" @onchange="@((ChangeEventArgs e) => NewRole = e.Value!.ToString())">
                         <option value="">Select a role</option>
                         <option value="SuperUser">Super User</option>
@@ -66,9 +71,10 @@
         {
             Admin = AdminService.PopulateAdmin(AdminModel);
 
-            var createResult = await UserManager.CreateAsync(Admin);
+            var createResult = await UserManager.CreateAsync(Admin, AdminModel.Password);
             if (createResult.Succeeded)
             {
+                Admin.EmailConfirmed = true;
                 var roleResult = await UserManager.AddToRoleAsync(Admin, NewRole);
                 if (roleResult.Succeeded)
                     await OnClick.InvokeAsync("");
