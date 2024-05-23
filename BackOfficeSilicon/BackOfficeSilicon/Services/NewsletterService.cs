@@ -2,14 +2,13 @@
 using Newtonsoft.Json;
 using System.Text;
 
-using static System.Net.WebRequestMethods;
 
 namespace BackOfficeSilicon.Services;
 
-public class NewsletterService(HttpClient http)
+public class NewsletterService(HttpClient http, IConfiguration configuration)
 {
     private readonly HttpClient Http = http;
-
+    private readonly IConfiguration _configuration = configuration;
     public async Task<IEnumerable<NewsletterModel>> GetSubscribersAsync()
     {
         try
@@ -34,7 +33,7 @@ public class NewsletterService(HttpClient http)
             var requestData = new { Email = email };
             var json = JsonConvert.SerializeObject(requestData);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var result = await Http.PostAsync("https://subscriptionprovider-silicon.azurewebsites.net/api/GetSubscribersFunction?code=VdUem1ardDpuXjfbHNodWR6NRuTneq6ZTFo3n_8r7fHZAzFutbdzXA==", content);
+            var result = await Http.PostAsync(_configuration.GetConnectionString("GetNewsletterProvider"), content);
             if (result.IsSuccessStatusCode)
             {
                 var model = await result.Content.ReadFromJsonAsync<NewsletterModel>();
@@ -50,9 +49,20 @@ public class NewsletterService(HttpClient http)
     {
         var json = JsonConvert.SerializeObject(model);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
-        var result = await Http.PostAsync("https://subscriptionprovider-silicon.azurewebsites.net/api/UpdateSubscriberFunction?code=bdOaYycwsJU9tdvHb_O_8pnk56JT8VFcZ7QpqqTrp5pRAzFuV3OoQQ%3D%3D", content);
+        var result = await Http.PostAsync(_configuration.GetConnectionString("UpdateNewsletterProvider"), content);
         if (result.IsSuccessStatusCode)
             return true;
         return false;
+    }
+    public async Task<IEnumerable<NewsletterModel>> DeleteAsync(string email)
+    {
+        var json = JsonConvert.SerializeObject(new { Email = email });
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var response = await Http.PostAsync(_configuration.GetConnectionString("DeleteNewsletterProvider"), content);
+
+        var result = await GetSubscribersAsync();
+        if(result.Any()) 
+            return result;
+        return null!;
     }
 }

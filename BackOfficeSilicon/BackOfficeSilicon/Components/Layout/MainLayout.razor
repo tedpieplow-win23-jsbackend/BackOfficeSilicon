@@ -4,16 +4,11 @@
 
 <div class="wrapper">
 
-    @if (!Navigation.Uri.Contains("/signin"))
-    {
-        <_Header />
-    }
+    <_Header />
 
     @Body
-    @if (!Navigation.Uri.Contains("/signin"))
-    {
-        <_Footer />
-    }
+
+    <_Footer />
 
 </div>
 

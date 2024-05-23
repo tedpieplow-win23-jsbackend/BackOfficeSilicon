@@ -14,12 +14,29 @@
             background-color: var(--color-gray-001);
             display: grid;
             grid-template-columns: repeat(10, 10%);
+
+            .button-box {
+                display: flex;
+                gap: 5px;
+            }
         }
 
         .content-item-light {
             background-color: var(--color-gray-100);
             display: grid;
             grid-template-columns: repeat(10, 10%);
+
+            .button-box {
+                display: flex;
+                gap: 5px;
+            }
+        }
+
+        .center-content{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
         }
 
         .red {
@@ -30,30 +47,44 @@
             color: $success;
         }
 
+
+
         .conten-item-email {
-            box-sizing: border-box;
-            max-width: 100%;
-            word-break: break-all;
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-            overflow: auto;
-            white-space: normal;
-            hyphens: auto;
-            overflow-x: hidden;
-
-            p {
-
-                word-break: break-all;
-                overflow-wrap: break-word;
-                overflow: auto;
-                white-space: normal;
-                hyphens: auto;
-                overflow-x: hidden;
-            }
         }
     }
 }
+.quickgrid-table tr:nth-child(even) {
+    background-color: var(--color-gray-100);
+}
 
-.newsletter-form{
+.newsletter-form {
 
+    h3 {
+        color: var(--color-gray-800);
+        text-align: center;
+    }
+
+    #subscribe-form {
+
+        .checkboxes {
+            display: flex;
+            margin: 20px 0;
+            justify-content: center;
+            gap: 20px;
+
+            .box {
+                display: flex;
+                flex-direction: column-reverse;
+            }
+        }
+
+        .subscribe {
+            display: flex;
+            justify-content: space-evenly;
+
+            .btn-red {
+                padding: 15px 50px;
+            }
+        }
+    }
 }

@@ -323,6 +323,7 @@ a:hover {
   padding-bottom: 13px;
 }
 .btn-theme-s:hover {
+  transition: ease-in-out 0.5s;
   box-shadow: 0px 8px 18px -8px rgba(19, 16, 34, 0.15);
   text-decoration: none;
   background: #565973;
@@ -343,6 +344,7 @@ a:hover {
   border: none;
 }
 .btn-gray:hover {
+  transition: ease-in-out 0.5s;
   text-decoration: none;
   background: #565973;
   color: #FFFFFF;
@@ -451,6 +453,7 @@ a:hover {
   color: #E2E5F1;
 }
 .btn-red:hover {
+  transition: ease-in-out 0.5s;
   text-decoration: none;
   background: #6366F1;
   color: #FFFFFF;
@@ -622,6 +625,13 @@ header .container .btn-mobile {
 
 .no-scroll {
   overflow: hidden;
+}
+
+.admin-presentation {
+  margin-left: 3rem;
+}
+.admin-presentation h4 {
+  color: white;
 }
 
 .nav-bar {
@@ -859,10 +869,24 @@ header .container .btn-mobile {
   display: grid;
   grid-template-columns: repeat(10, 10%);
 }
+.newsletter .content-box .content-item-dark .button-box {
+  display: flex;
+  gap: 5px;
+}
 .newsletter .content-box .content-item-light {
   background-color: var(--color-gray-100);
   display: grid;
   grid-template-columns: repeat(10, 10%);
+}
+.newsletter .content-box .content-item-light .button-box {
+  display: flex;
+  gap: 5px;
+}
+.newsletter .content-box .center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 .newsletter .content-box .red {
   color: #EF4444;
@@ -870,29 +894,34 @@ header .container .btn-mobile {
 .newsletter .content-box .green {
   color: #22C55E;
 }
-.newsletter .content-box .conten-item-email {
-  box-sizing: border-box;
-  max-width: 100%;
-  word-break: break-all;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  overflow: auto;
-  white-space: normal;
-  hyphens: auto;
-  overflow-x: hidden;
+.quickgrid-table tr:nth-child(even) {
+  background-color: var(--color-gray-100);
 }
-.newsletter .content-box .conten-item-email p {
-  word-break: break-all;
-  overflow-wrap: break-word;
-  overflow: auto;
-  white-space: normal;
-  hyphens: auto;
-  overflow-x: hidden;
+
+.newsletter-form h3 {
+  color: var(--color-gray-800);
+  text-align: center;
+}
+.newsletter-form #subscribe-form .checkboxes {
+  display: flex;
+  margin: 20px 0;
+  justify-content: center;
+  gap: 20px;
+}
+.newsletter-form #subscribe-form .checkboxes .box {
+  display: flex;
+  flex-direction: column-reverse;
+}
+.newsletter-form #subscribe-form .subscribe {
+  display: flex;
+  justify-content: space-evenly;
+}
+.newsletter-form #subscribe-form .subscribe .btn-red {
+  padding: 15px 50px;
 }
 
 .user-view {
   margin-top: 50px;
-  background-color: var(--color-gray-100);
 }
 .user-view h1 {
   color: var(--color-gray-900);
@@ -908,4 +937,53 @@ header .container .btn-mobile {
 }
 .paginator button:hover {
   background-color: var(--color-gray-600) !important;
+}
+
+.admin-view #create-admin-button {
+  margin: 3rem 0;
+}
+#admin-form {
+  padding: 2rem;
+}
+#admin-form .admin-content {
+  margin-bottom: 3rem;
+}
+#admin-form .admin-content .inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+#admin-form .admin-content .inputs .box {
+  display: flex;
+  flex-direction: column;
+}
+#admin-form .admin-content .inputs .box input {
+  width: 25%;
+}
+#admin-form .admin-content .inputs .box select {
+  width: 25%;
+}
+#admin-form .admin-buttons {
+  display: flex;
+  gap: 6.3rem;
+}
+
+.user-form {
+  margin-top: 150px;
+}
+.user-form .container .input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.user-form .container .input .input-pair {
+  display: grid;
+  margin-top: 15px;
+  width: 50%;
+}
+.user-form .container .input .buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-top: 15px;
 }

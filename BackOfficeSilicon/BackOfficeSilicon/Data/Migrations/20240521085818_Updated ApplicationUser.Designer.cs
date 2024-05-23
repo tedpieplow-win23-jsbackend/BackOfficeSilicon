@@ -4,6 +4,7 @@ using BackOfficeSilicon.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackOfficeSilicon.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240521085818_Updated ApplicationUser")]
+    partial class UpdatedApplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,6 +32,9 @@ namespace BackOfficeSilicon.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("Biography")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -71,6 +77,9 @@ namespace BackOfficeSilicon.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("ProfileImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");

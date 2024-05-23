@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Blazored.Modal;
 using BackOfficeSilicon.Services;
+using Silicon.Blazor.Services;
 
 namespace BackOfficeSilicon.Configurations;
 
@@ -25,6 +26,10 @@ public static class ServiceConfiguration
         services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
         services.AddScoped<ClaimsPrincipal>();
         services.AddScoped<NewsletterService>();
+        services.AddScoped<UserService>();
+        services.AddScoped<CookieEvents>();
+        services.AddScoped<AdminService>();
+        services.AddScoped<AppUsersService>();
 
         services.AddBlazoredModal();
 
@@ -38,6 +43,11 @@ public static class ServiceConfiguration
             options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
         })
             .AddIdentityCookies();
+
+        services.ConfigureApplicationCookie(options =>
+        {
+            options.EventsType = typeof(CookieEvents);
+        });
 
         var connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 

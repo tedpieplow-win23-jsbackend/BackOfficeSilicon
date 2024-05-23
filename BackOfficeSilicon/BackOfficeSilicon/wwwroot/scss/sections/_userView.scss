@@ -1,9 +1,5 @@
-
-
-
 .user-view {
     margin-top: 50px;
-    background-color: var(--color-gray-100);
 
     h1 {
         color: var(--color-gray-900);
@@ -16,6 +12,7 @@
     }
 }
 
+
 .paginator {
     button {
         background-color: var(--color-theme) !important;
@@ -25,3 +22,5 @@
         }
     }
 }
+
+

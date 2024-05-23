@@ -1,10 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Components.QuickGrid
 @using System.Text
 @using static BackOfficeSilicon.Components.BackOffice.UserForm
+@inject AppUsersService UserService
+@rendermode InteractiveServer
 <div class="container user-view">
     <h1>Users</h1>
     <div class="content-box">
-        <QuickGrid Items="List.AsQueryable()" Pagination="Pagination">
+        <QuickGrid Items="List.AsQueryable()" Pagination="Pagination" Class="quickgrid-table">
             <PropertyColumn Property="l => l.Id" Title="ID" Sortable="true" />
             <PropertyColumn Property="l => l.FirstName" Title="First Name" />
             <PropertyColumn Property="l => l.LastName" Title="Last Name" />
@@ -13,7 +15,7 @@
                 <button class="btn-red" onclick="@(() => DeleteUser(context.Id))"><i class="fa-solid fa-trash"></i></button>
             </TemplateColumn>
             <TemplateColumn>
-                <button class="btn-theme" style="padding:15px;"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn-theme" @onclick="() => Update(context.Email)" style="padding:15px;"><i class="fa-solid fa-pen"></i></button>
             </TemplateColumn>
         </QuickGrid>
         <Paginator State="Pagination" />
@@ -21,9 +23,9 @@
 </div>
 @code {
     [Parameter]
-    public bool IsDark { get; set; }
+    public EventCallback<string> OnClick { get; set; }
 
-    PaginationState Pagination = new PaginationState { ItemsPerPage = 2 };
+    PaginationState Pagination = new PaginationState { ItemsPerPage = 10 };
 
     private IEnumerable<UserModel> List { get; set; } = [];
 
@@ -31,28 +33,15 @@
     {
         try
         {
-            var result = await GetUsersAsync();
+            var result = await UserService.GetUsersAsync();
             List = result;
         }
         catch (Exception) { }
     }
 
-    public async Task<IEnumerable<UserModel>> GetUsersAsync()
+    public async Task Update(string Email)
     {
-        try
-        {
-            var result = await Http.PostAsync("https://userprovider-silicon.azurewebsites.net/api/GetUsersFunction?code=mO8A8H66WCIbodND5EnyTvnYdLJRR48RFtczOpczn60_AzFudJZ9Fw%3D%3D", null);
-            if (result.IsSuccessStatusCode)
-            {
-                var list = await result.Content.ReadFromJsonAsync<IEnumerable<UserModel>>();
-                if (list!.Any())
-                    return list!;
-            }
-        }
-        catch (Exception ex)
-        {
-        }
-        return null!;
+        await OnClick.InvokeAsync(Email);
     }
 
     public async Task DeleteUser(string id)
@@ -62,7 +51,7 @@
         var result = await Http.PostAsync("https://userprovider-silicon.azurewebsites.net/api/DeleteUserFunction?code=mk20mV6sfFt9fwqNk1UBR32EWBWIhcO-e3F5Sh1z-p_cAzFueqvmHg%3D%3D", content);
         if (result.IsSuccessStatusCode)
         {
-            var refreshList = await GetUsersAsync();
+            var refreshList = await UserService.GetUsersAsync();
             if (refreshList != null && refreshList.Any())
             {
                 List = refreshList;

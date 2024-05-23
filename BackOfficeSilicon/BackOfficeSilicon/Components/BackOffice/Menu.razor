@@ -1,12 +1,15 @@
 ﻿@rendermode InteractiveServer
-
+@inject UserService UserService
 
 <div>
 
-    <div class="profile">
-        <img alt="user-image"/>
-        <p class="email"></p>
-    </div>
+    @if(Admin != null)
+    {
+        <div class="admin-presentation">
+            <h4>@Admin.FirstName @Admin.LastName</h4>
+            <p>@Admin.Email</p>
+        </div>
+    }
 
     <div class="nav-bar">
         <i class="icon fa-solid fa-building-memo"></i>
@@ -29,6 +32,14 @@
     private async Task NavigateToPage(string page)
     {
         await OnClick.InvokeAsync(page);
+    }
+
+    [CascadingParameter]
+    private ApplicationUser Admin { get; set; } = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Admin = await UserService.GetUserAsync();
     }
 }
 
