@@ -17,7 +17,7 @@
             <div class="inputs">
                 <div class="box">
                     <label>Email</label>
-                    <InputText @bind-Value="AdminModel.Email" type="email"/>
+                    <InputText @bind-Value="AdminModel.Email" type="email" />
                     <ValidationMessage For="() => AdminModel.Email" class="text-danger" />
                 </div>
                 <div class="box">
@@ -36,6 +36,7 @@
         </div>
     </EditForm>
 </div>
+
 @code {
     [Parameter]
     public EventCallback<string> OnClick { get; set; }
@@ -77,6 +78,6 @@
 
     public async Task Cancel()
     {
-        await OnClick.InvokeAsync(""); 
+        await OnClick.InvokeAsync("");
     }
 }
