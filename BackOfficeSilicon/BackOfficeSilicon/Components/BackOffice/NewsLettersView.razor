@@ -15,7 +15,7 @@
     <div class="options-bar">
     </div>
     <div class="content-box">
-        <QuickGrid Items="List.AsQueryable()" Class="quickgrid-table">
+        <QuickGrid Items="List.AsQueryable()" Pagination="Pagination" Class="quickgrid-table">
 
             <PropertyColumn Property="l => l.Email" Title ="Email" Sortable="true"/>
             <TemplateColumn Title="Subscribed">
@@ -66,6 +66,7 @@
                 <button class="btn-theme" @onclick="() => Update(context.Email)"><i class="fa-solid fa-pen"></i></button>
             </TemplateColumn>
         </QuickGrid>
+        <Paginator State="Pagination" />
     </div>
 </div>
 @code {
@@ -75,6 +76,8 @@
     private string GetIcon(bool value) => value ? "fa-check green" : "fa-xmark red";
 
     private IEnumerable<NewsletterModel> List { get; set; } = [];
+
+    PaginationState Pagination = new PaginationState { ItemsPerPage = 10 };
 
     protected override async Task OnParametersSetAsync()
     {
