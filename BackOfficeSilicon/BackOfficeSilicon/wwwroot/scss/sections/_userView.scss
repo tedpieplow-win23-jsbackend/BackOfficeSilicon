@@ -1,0 +1,26 @@
+.user-view {
+    margin-top: 50px;
+
+    h1 {
+        color: var(--color-gray-900);
+        margin-top: 100px;
+    }
+
+    .content-box {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+
+.paginator {
+    button {
+        background-color: var(--color-theme) !important;
+
+        &:hover {
+            background-color: var(--color-gray-600) !important;
+        }
+    }
+}
+
+

@@ -1,0 +1,21 @@
+﻿@rendermode InteractiveServer
+
+@if (string.IsNullOrEmpty(EmailCheck))
+{
+    <UsersView OnClick="RenderClickedPage" />
+}
+else
+{
+    <UserForm OnClick="RenderClickedPage" Email="@EmailCheck" />
+}
+
+@code {
+    [Parameter]
+    public string? EmailIn { get; set; }
+    private string EmailCheck = "";
+    private void RenderClickedPage(string EmailIn)
+    {
+        EmailCheck = EmailIn;
+        StateHasChanged();
+    }
+}

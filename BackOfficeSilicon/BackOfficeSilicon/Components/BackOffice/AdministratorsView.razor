@@ -6,8 +6,9 @@
 @rendermode InteractiveServer
 
 <div class="container admin-view">
+    <h1>Admins</h1>
     <button id="create-admin-button" class="btn-theme" @onclick="() => CreateAdmin()"><i class="fa-solid fa-pen"></i> Create new admin</button>
-    <QuickGrid Items="AdminList.AsQueryable()" Class="quickgrid-table">
+    <QuickGrid Items="AdminList.AsQueryable()" Class="quickgrid-table" Pagination="Pagination">
         <PropertyColumn Property="l => l.Email" Title="Email" Sortable="true" />
         <PropertyColumn Property="l => l.FirstName" Title="First Name" />
         <PropertyColumn Property="l => l.LastName" Title="Last Name" />
@@ -28,12 +29,17 @@
             <button class="btn-theme" @onclick="() => UpdateAdmin(context.Email)"><i class="fa-solid fa-pen"></i></button>
         </TemplateColumn>
         <TemplateColumn Title="Delete">
-            <button class="btn-red" @onclick="() => DeleteAdmin(context)"><i class="fa-solid fa-trash"></i></button>
+            @if (@context.Role != "SuperUser")
+            {
+                <button class="btn-red" @onclick="() => DeleteAdmin(context)"><i class="fa-solid fa-trash"></i></button>
+            }
         </TemplateColumn>
     </QuickGrid>
+    <Paginator State="Pagination" />
 </div>
 
 @code {
+    PaginationState Pagination = new PaginationState { ItemsPerPage = 10 };
 
     [Parameter]
     public EventCallback<string> OnClick { get; set; }

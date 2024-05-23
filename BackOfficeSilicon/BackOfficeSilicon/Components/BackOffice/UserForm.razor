@@ -1,0 +1,75 @@
+﻿@page "/users/edit"
+@using System.Text
+@inject AppUsersService UserService
+@rendermode InteractiveServer
+
+<div class="user-form">
+    <EditForm FormName="userForm" Model="UserFormModel" OnValidSubmit="OnValidSubmit" id="" method="post" novalidate>
+        <DataAnnotationsValidator />
+        <div class="container">
+            <div class="input">
+                <div class="input-pair">
+                    <label>ID</label>
+                    <InputText @bind-Value="UserFormModel.Id" disabled="true"/>
+                </div>
+                <div class="input-pair">
+                    <label>First Name</label>
+                    <InputText @bind-Value="UserFormModel.FirstName" />
+                </div>
+                <div class="input-pair">
+                    <label>Last Name</label>
+                    <InputText @bind-Value="UserFormModel.LastName" />
+                </div>
+                <div class="input-pair">
+                    <label>Email</label>
+                    <InputText @bind-Value="UserFormModel.Email" />
+                    <ValidationMessage For="() => UserFormModel.Email" class="text-danger" />
+                </div>
+                <div class="buttons">
+                    <button class="btn-theme" type="submit">Update</button>
+                    <button class="btn-gray" @onclick="Cancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+</div>
+@code {
+
+    [SupplyParameterFromForm]
+    public UserModel UserFormModel { get; set; } = new();
+
+    [Parameter]
+    public string? Email { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnClick { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            if (!string.IsNullOrEmpty(Email))
+            {
+                UserFormModel = await UserService.GetOneUserAsync(Email);
+            }
+        }
+        catch (Exception) { }
+    }
+
+    public async Task OnValidSubmit()
+    {
+        var json = JsonConvert.SerializeObject(UserFormModel);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var result = await Http.PostAsync("https://userprovider-silicon.azurewebsites.net/api/UpdateUserFunction?code=pftu-fTG8IRVBWARny9TwddaM7CSdlO13qNr7mGS74BmAzFu2fFSxg%3D%3D", content);
+
+        if (result.IsSuccessStatusCode)
+        {
+            await OnClick.InvokeAsync();
+        }
+    }
+
+    public async Task Cancel()
+    {
+        await OnClick.InvokeAsync("");
+    }
+}

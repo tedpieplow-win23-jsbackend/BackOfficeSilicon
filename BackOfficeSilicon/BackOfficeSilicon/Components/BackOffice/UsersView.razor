@@ -1,5 +1,62 @@
-﻿<h3>UsersView</h3>
-<p>Hej</p>
+﻿@using Microsoft.AspNetCore.Components.QuickGrid
+@using System.Text
+@using static BackOfficeSilicon.Components.BackOffice.UserForm
+@inject AppUsersService UserService
+@rendermode InteractiveServer
+<div class="container user-view">
+    <h1>Users</h1>
+    <div class="content-box">
+        <QuickGrid Items="List.AsQueryable()" Pagination="Pagination" Class="quickgrid-table">
+            <PropertyColumn Property="l => l.Id" Title="ID" Sortable="true" />
+            <PropertyColumn Property="l => l.FirstName" Title="First Name" />
+            <PropertyColumn Property="l => l.LastName" Title="Last Name" />
+            <PropertyColumn Property="l => l.Email" Title="Email" />
+            <TemplateColumn>
+                <button class="btn-red" onclick="@(() => DeleteUser(context.Id))"><i class="fa-solid fa-trash"></i></button>
+            </TemplateColumn>
+            <TemplateColumn>
+                <button class="btn-theme" @onclick="() => Update(context.Email)" style="padding:15px;"><i class="fa-solid fa-pen"></i></button>
+            </TemplateColumn>
+        </QuickGrid>
+        <Paginator State="Pagination" />
+    </div>
+</div>
 @code {
+    [Parameter]
+    public EventCallback<string> OnClick { get; set; }
 
+    PaginationState Pagination = new PaginationState { ItemsPerPage = 10 };
+
+    private IEnumerable<UserModel> List { get; set; } = [];
+
+    protected override async Task OnParametersSetAsync()
+    {
+        try
+        {
+            var result = await UserService.GetUsersAsync();
+            List = result;
+        }
+        catch (Exception) { }
+    }
+
+    public async Task Update(string Email)
+    {
+        await OnClick.InvokeAsync(Email);
+    }
+
+    public async Task DeleteUser(string id)
+    {
+        var json = JsonConvert.SerializeObject(new { id = id });
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var result = await Http.PostAsync("https://userprovider-silicon.azurewebsites.net/api/DeleteUserFunction?code=mk20mV6sfFt9fwqNk1UBR32EWBWIhcO-e3F5Sh1z-p_cAzFueqvmHg%3D%3D", content);
+        if (result.IsSuccessStatusCode)
+        {
+            var refreshList = await UserService.GetUsersAsync();
+            if (refreshList != null && refreshList.Any())
+            {
+                List = refreshList;
+                StateHasChanged();
+            }
+        }
+    }
 }

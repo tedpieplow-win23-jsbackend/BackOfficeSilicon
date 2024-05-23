@@ -113,11 +113,14 @@
                 if (result.Succeeded)
                     NavigationManager.NavigateTo("/backoffice", true);
                 else
+                {
                     StatusMessage = "Failed to login, please try again";
+                    return;
+                }
+               
             }
 
             StatusMessage = "You do not have the required permissions to view the Backoffice.";
-
             return;
         }
 
