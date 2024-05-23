@@ -970,6 +970,9 @@ header .container .btn-mobile {
   margin-top: 100px;
   color: var(--color-gray-900);
 }
+.courses-view #create-course-button {
+  margin-bottom: 3rem;
+}
 
 .user-form {
   margin-top: 150px;

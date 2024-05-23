@@ -2,15 +2,15 @@
 
 @if (string.IsNullOrEmpty(ComponentSelector))
 {
-    <AdministratorsView OnClick="RenderClickedPage" />
+    <CoursesView OnClick="RenderClickedPage" />
 }
 else if (ComponentSelector == "Create")
 {
-    <AdministratorsCreateForm OnClick="RenderClickedPage" />
+    <CourseCreate OnClick="RenderClickedPage" />
 }
 else
 {
-    <AdministratorsEditForm OnClick="RenderClickedPage" Email="@ComponentSelector" />
+    <CourseEdit OnClick="RenderClickedPage" CourseId="@ComponentSelector" />
 }
 
 @code {

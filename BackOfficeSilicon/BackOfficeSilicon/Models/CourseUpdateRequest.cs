@@ -1,6 +1,6 @@
 ﻿namespace BackOfficeSilicon.Models;
 
-public class CourseCard
+public class CourseUpdateRequest
 {
     public string Id { get; set; } = null!;
     public string? ImageUri { get; set; }
@@ -15,33 +15,33 @@ public class CourseCard
     public string? LikesInPercent { get; set; }
     public string? Likes { get; set; }
     public string? Hours { get; set; }
-    public List<Author>? Authors { get; set; }
-    public Prices? Prices { get; set; }
-    public Content? Content { get; set; }
+    // We use virtual due to LazyLoading
+    public List<AuthorUpdateRequest>? Authors { get; set; }
+    public PricesUpdateRequest? Prices { get; set; }
+    public ContentUpdateRequest? Content { get; set; }
 }
 
-public class Author
+public class AuthorUpdateRequest
 {
     public string? Name { get; set; }
 }
-
-public class Content
+public class ContentUpdateRequest
 {
     public string? Description { get; set; }
     public List<string>? Includes { get; set; }
-    public List<ProgramDetail>? ProgramDetails { get; set; }
+    public List<ProgramDetailItemUpdateRequest>? ProgramDetails { get; set; }
 }
 
-public class Prices
+public class PricesUpdateRequest
 {
     public string? Currency { get; set; }
     public decimal Price { get; set; }
     public decimal Discount { get; set; }
 }
 
-public class ProgramDetail
+public class ProgramDetailItemUpdateRequest
 {
-    public int? Id { get; set; }
+    public int Id { get; set; }
     public string? Title { get; set; }
     public string? Description { get; set; }
 }

@@ -1,6 +1,4 @@
 ﻿using BackOfficeSilicon.Models;
-using Microsoft.AspNetCore.Razor.TagHelpers;
-using static System.Net.WebRequestMethods;
 
 namespace BackOfficeSilicon.Services;
 
@@ -106,8 +104,8 @@ public class CourseService(HttpClient http, IConfiguration configuration)
         return null!;
     }
 
-    public async Task<CourseCard> UpdateCourseAsync()
-    {
-        return new CourseCard();
-    }
+    //public async Task<CourseCard> UpdateCourseAsync()
+    //{
+    //    return new CourseCard();
+    //}
 }

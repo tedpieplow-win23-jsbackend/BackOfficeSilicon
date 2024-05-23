@@ -2,6 +2,8 @@
 @inject IConfiguration Configuration
 @inject NavigationManager NavigationManager
 
+@rendermode InteractiveServer
+
 <div class="container courses-view">
 
     <h1>CoursesView</h1>
@@ -10,7 +12,7 @@
 
     @if (courses != null && courses.Any())
     {
-        <QuickGrid Items="courses.AsQueryable()" Class="quickgrid-table">
+        <QuickGrid Items="courses.AsQueryable()" Class="quickgrid-table" Pagination="Pagination">
             <PropertyColumn Property="c => c.Id" Title="ID" Sortable="true" />
             <PropertyColumn Property="c => c.Title" Title="Title" Sortable="true" />
             <TemplateColumn Title="Update">
@@ -20,6 +22,7 @@
                 <button class="btn btn-sm btn-danger" @onclick="(e) => DeleteCourseAsync(context.Id)"><i class="fa-solid fa-trash"></i></button>
             </TemplateColumn>
         </QuickGrid>
+        <Paginator State="Pagination" />
     }
     else
     {
@@ -32,6 +35,7 @@
     [Parameter]
     public EventCallback<string> OnClick { get; set; }
     private List<CourseCard>? courses = new();
+    PaginationState Pagination = new PaginationState { ItemsPerPage = 6 };
 
     protected override async Task OnInitializedAsync()
     {
@@ -59,12 +63,12 @@
 
     private async Task CreateCourseAsync()
     {
-
+        await OnClick.InvokeAsync("Create");
     }
 
-    private async Task UpdateCourseAsync(string courseId)
+    public async Task UpdateCourseAsync(string courseId)
     {
-        NavigationManager.NavigateTo($"/editcourse/{courseId}");
+        await OnClick.InvokeAsync(courseId);
     }
 
     private async Task DeleteCourseAsync(string courseId)
