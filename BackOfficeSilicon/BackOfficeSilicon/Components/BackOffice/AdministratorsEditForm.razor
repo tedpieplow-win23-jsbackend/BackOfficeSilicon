@@ -1,4 +1,5 @@
 ﻿@inject AdminService AdminService
+@inject UserService UserService
 @inject UserManager<ApplicationUser> UserManager
 @inject ILogger<AdministratorsView> Logger
 
@@ -48,9 +49,10 @@
     private string? StatusMessage { get; set; }
 
     [SupplyParameterFromForm]
-    private AdministratorModel AdminModel { get; set; } = new();
+    private AdminUpdateModel AdminModel { get; set; } = new();
 
     private ApplicationUser Admin { get; set; } = null!;
+
 
     protected override async Task OnInitializedAsync()
     {

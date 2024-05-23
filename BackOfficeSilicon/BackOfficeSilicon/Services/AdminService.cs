@@ -41,7 +41,7 @@ public class AdminService(UserManager<ApplicationUser> userManager, ILogger<Admi
         }
     }
 
-    public async Task<IdentityResult> UpdateAdminAsync(ApplicationUser admin, AdministratorModel model)
+    public async Task<IdentityResult> UpdateAdminAsync(ApplicationUser admin, AdminUpdateModel model)
     {
         try
         {
