@@ -889,3 +889,23 @@ header .container .btn-mobile {
   hyphens: auto;
   overflow-x: hidden;
 }
+
+.user-view {
+  margin-top: 50px;
+  background-color: var(--color-gray-100);
+}
+.user-view h1 {
+  color: var(--color-gray-900);
+  margin-top: 100px;
+}
+.user-view .content-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.paginator button {
+  background-color: var(--color-theme) !important;
+}
+.paginator button:hover {
+  background-color: var(--color-gray-600) !important;
+}

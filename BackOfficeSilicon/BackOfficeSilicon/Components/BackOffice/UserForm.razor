@@ -1,0 +1,48 @@
+﻿@page "/users/edit"
+@using System.Text
+
+<div class="container ">
+    <EditForm FormName="userForm" Model="Model" OnValidSubmit="OnValidSubmit" id="" method="post" novalidate>
+        <DataAnnotationsValidator />
+        <div class="">
+            <div class="">
+                <div class="">
+                    <InputText @bind-Value="Model.Id" />
+                    <label>ID</label>
+                </div>
+                <div class="">
+                    <InputText @bind-Value="Model.FirstName" />
+                    <label>First Name</label>
+                </div>
+                <div class="">
+                    <InputText @bind-Value="Model.LastName" />
+                    <label>Last Name</label>
+                </div>
+                <div class="">
+                    <InputText @bind-Value="Model.Email" />
+                    <label>Email</label>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+</div>
+@code {
+
+    public async Task OnValidSubmit()
+    {
+        var json = JsonConvert.SerializeObject(Model);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var result = await Http.PostAsync("https://userprovider-silicon.azurewebsites.net/api/UpdateUserFunction?code=pftu-fTG8IRVBWARny9TwddaM7CSdlO13qNr7mGS74BmAzFu2fFSxg%3D%3D", content);
+    }
+
+
+    private UserModel Model { get; set; } = new();
+
+    public class UserModel()
+    {
+        public string Id { get; set; } = null!;
+        public string FirstName { get; set; } = null!;
+        public string LastName { get; set; } = null!;
+        public string Email { get; set; } = null!;
+    }
+}
