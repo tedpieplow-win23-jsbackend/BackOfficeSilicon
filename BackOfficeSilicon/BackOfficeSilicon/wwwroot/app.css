@@ -882,6 +882,12 @@ header .container .btn-mobile {
   display: flex;
   gap: 5px;
 }
+.newsletter .content-box .center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
 .newsletter .content-box .red {
   color: #EF4444;
 }
