@@ -28,7 +28,10 @@
             <button class="btn-theme" @onclick="() => UpdateAdmin(context.Email)"><i class="fa-solid fa-pen"></i></button>
         </TemplateColumn>
         <TemplateColumn Title="Delete">
-            <button class="btn-red" @onclick="() => DeleteAdmin(context)"><i class="fa-solid fa-trash"></i></button>
+            @if (@context.Role != "SuperUser")
+            {
+                <button class="btn-red" @onclick="() => DeleteAdmin(context)"><i class="fa-solid fa-trash"></i></button>
+            }
         </TemplateColumn>
     </QuickGrid>
 </div>
