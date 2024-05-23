@@ -1,5 +1,90 @@
-﻿<h3>CoursesView</h3>
-<p> kurser fungerar!!</p>
-@code {
+﻿@using BackOfficeSilicon.Models
+@inject IConfiguration Configuration
 
+<div class="container courses-view">
+    <h3>CoursesView</h3>
+    <button id="create-course-button" class="btn-theme" @onclick="CreateCourseAsync"><i class="fa-solid fa-pen"></i> Create new course</button>
+
+    @if (courses != null && courses.Any())
+    {
+        <QuickGrid Items="courses.AsQueryable()" Class="quickgrid-table">
+            <PropertyColumn Property="c => c.Id" Title="ID" Sortable="true" />
+            <PropertyColumn Property="c => c.Title" Title="Title" Sortable="true" />
+            <TemplateColumn Title="Update">
+                <button class="btn btn-sm btn-theme" @onclick="(e) => UpdateCourseAsync(context.Id)"><i class="fa-solid fa-pen"></i></button>
+            </TemplateColumn>
+            <TemplateColumn Title="Delete">
+                <button class="btn btn-sm btn-danger" @onclick="(e) => DeleteCourseAsync(context.Id)"><i class="fa-solid fa-trash"></i></button>
+            </TemplateColumn>
+        </QuickGrid>
+    }
+    else
+    {
+        <p>No courses found.</p>
+    }
+</div>
+
+
+@code {
+    [Parameter]
+    public EventCallback<string> OnClick { get; set; }
+    private List<CourseCard>? courses = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetCoursesAsync();
+    }
+
+    private async Task GetCoursesAsync()
+    {
+        var query = new GraphQLQuery { Query = "{ getCourses { id title } }" };
+        var response = await Http.PostAsJsonAsync(Configuration.GetValue<string>("ConnectionStrings:GetCoursesProvider"), query);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<DynamicGraphQLResponse>();
+            courses = result?.Data.GetProperty("getCourses").EnumerateArray()
+                .Where(course => !string.IsNullOrEmpty(course.GetProperty("id").GetString()))
+                .Select(course => new CourseCard
+                    {
+                        Id = course.TryGetProperty("id", out var idValue) ? idValue.GetString() ?? "" : "",
+                        Title = course.GetProperty("title").GetString()
+                    })
+                .ToList();
+        }
+    }
+
+    private async Task CreateCourseAsync()
+    {
+
+    }
+
+    private async Task UpdateCourseAsync(string courseId)
+    {
+        await OnClick.InvokeAsync();
+    }
+
+    private async Task DeleteCourseAsync(string courseId)
+    {
+        var query = new GraphQLQuery
+            {
+                Query = @" mutation deleteCourse($id: String!) { deleteCourses (id: $id)}",
+                Variables = new { id = courseId }
+            };
+
+        var response = await Http.PostAsJsonAsync(Configuration.GetValue<string>("ConnectionStrings:GetCoursesProvider"), query);
+
+        if (response.IsSuccessStatusCode)
+        {
+            if (courses != null)
+            {
+                var courseToRemove = courses.FirstOrDefault(c => c.Id == courseId);
+                if (courseToRemove != null)
+                {
+                    courses.Remove(courseToRemove);
+                    await InvokeAsync(StateHasChanged);
+                }
+            }
+        }
+    }
 }
