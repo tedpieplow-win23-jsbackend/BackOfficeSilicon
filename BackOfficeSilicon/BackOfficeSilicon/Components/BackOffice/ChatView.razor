@@ -58,7 +58,7 @@
 
     private async Task Send()
     {
-        var message = new ChatMessage { UserName = userName, Message = currentMessage };
+        var message = new ChatMessage { UserName = userName, Message = currentMessage, Created = DateTime.Now };
         await connection!.SendAsync("SendMessageToAll", message.UserName, message.Message, message.Created);
         currentMessage = string.Empty;
 
