@@ -21,15 +21,6 @@ else
 
 app.MapHub<ChatHub>("/chathub");
 
-app.UseRouting();
-app.UseCors();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapBlazorHub();
-    endpoints.MapHub<ChatHub>("/chathub");
-    endpoints.MapFallbackToPage("/_host");
-});
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
