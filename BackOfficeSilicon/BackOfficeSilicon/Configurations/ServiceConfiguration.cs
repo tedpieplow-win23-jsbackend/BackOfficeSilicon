@@ -31,6 +31,18 @@ public static class ServiceConfiguration
         services.AddScoped<AdminService>();
         services.AddScoped<AppUsersService>();
 
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(builder =>
+            {
+                // Sätt våran client  app i citatet
+                builder.WithOrigins("")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            });
+        });
+
         services.AddSignalR();
 
         services.AddBlazoredModal();
