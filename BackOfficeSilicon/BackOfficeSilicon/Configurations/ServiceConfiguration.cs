@@ -31,6 +31,8 @@ public static class ServiceConfiguration
         services.AddScoped<AdminService>();
         services.AddScoped<AppUsersService>();
 
+        services.AddSignalR();
+
         services.AddBlazoredModal();
 
         services.AddHttpContextAccessor();

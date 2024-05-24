@@ -17,6 +17,8 @@ else
     app.UseHsts();
 }
 
+app.MapHub<ChatHub>("/chathub");
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();

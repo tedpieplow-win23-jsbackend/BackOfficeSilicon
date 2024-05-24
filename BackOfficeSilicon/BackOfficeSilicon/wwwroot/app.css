@@ -982,3 +982,21 @@ header .container .btn-mobile {
   gap: 10px;
   margin-top: 15px;
 }
+
+.chat-bubble-right {
+  text-align: right;
+  background-color: #6366F1;
+  margin-left: auto;
+  border-radius: 15px;
+  padding: 10px;
+  max-width: 75%;
+}
+
+.chat-bubble-left {
+  text-align: left;
+  background-color: #FFFFFF;
+  margin-right: auto;
+  border-radius: 15px;
+  padding: 10px;
+  max-width: 75%;
+}
