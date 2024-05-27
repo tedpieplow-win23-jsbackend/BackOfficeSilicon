@@ -993,3 +993,41 @@ header .container .btn-mobile {
   gap: 10px;
   margin-top: 15px;
 }
+
+.user-form {
+  margin-top: 150px;
+}
+.user-form .container .input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.user-form .container .input .input-pair {
+  display: grid;
+  margin-top: 15px;
+  width: 50%;
+}
+.user-form .container .input .buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.chat-bubble-right {
+  text-align: right;
+  background-color: #6366F1;
+  margin-left: auto;
+  border-radius: 15px;
+  padding: 10px;
+  max-width: 75%;
+}
+
+.chat-bubble-left {
+  text-align: left;
+  background-color: #FFFFFF;
+  margin-right: auto;
+  border-radius: 15px;
+  padding: 10px;
+  max-width: 75%;
+}
