@@ -164,7 +164,7 @@ public class CourseService(HttpClient http, IConfiguration configuration)
 
                     if (root.TryGetProperty("data", out var data) && data.TryGetProperty("updateCourse", out var courseData))
                     {
-                        var updatedCourse =  new CourseCard
+                        var updatedCourse = new CourseCard
                         {
                             Id = courseData.TryGetProperty("id", out var id) ? id.GetString() ?? "" : "",
                             Hours = courseData.TryGetProperty("hours", out var hours) ? hours.GetString() ?? "" : "",
@@ -266,5 +266,68 @@ public class CourseService(HttpClient http, IConfiguration configuration)
             }
         };
         return input;
+    }
+
+    public async Task<CreateCourseCard> CreateNewCourseAsync(CreateCourseCard input)
+    {
+        var query = new GraphQLQuery
+        {
+            Query = @"
+            mutation CreateCourse($input: CourseCreateRequestInput!) {
+                createCourse(input: $input) {
+                    id
+                    imageUri
+                    imageHeaderUri
+                    isBestseller
+                    isDigital
+                    categories
+                    title
+                    ingress
+                    starRating
+                    reviews
+                    likesInPercent
+                    likes
+                    hours
+                    authors {
+                        name
+                    }
+                    content {
+                        description
+                        includes
+                        programDetails {
+                            id
+                            title
+                            description
+                        }
+                    }
+                    prices {
+                        currency
+                        price
+                        discount
+                    }
+                }
+            }",
+            Variables = new { input }
+        };
+
+        try
+        {
+            var response = await _http.PostAsJsonAsync(_configuration.GetValue<string>("ConnectionStrings:GetCoursesProvider"), query);
+            //var response = await _http.PostAsJsonAsync("http://localhost:7228/api/graphql", query);
+
+            // Fixa visuella meddelanden. 
+            if (response.IsSuccessStatusCode)
+            {
+                if (response.Content != null)
+                {
+                    return input;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in UpdateCourseAsync: {ex.Message}");
+        }
+        return null!;
     }
 }

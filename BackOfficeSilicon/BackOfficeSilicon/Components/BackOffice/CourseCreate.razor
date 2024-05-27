@@ -1,6 +1,156 @@
-﻿<h3>CourseCreate</h3>
+﻿@inject CourseService CourseService
+
+<section class="course-edit">
+
+    <div>
+        <div>
+            <label>Title</label>
+            <InputText @bind-Value="course.Title" class="form-control" />
+        </div>
+        <div>
+            <label>Ingress</label>
+            <textarea @bind="course.Ingress" class="form-control"></textarea>
+        </div>
+        <div>
+            <label>Star Rating</label>
+            <InputNumber @bind-Value="course.StarRating" step="0.1" class="form-control" />
+        </div>
+        <div>
+            <label>Reviews</label>
+            <InputText @bind-Value="course.Reviews" class="form-control" />
+        </div>
+        <div>
+            <label>Likes in Percent</label>
+            <InputText @bind-Value="course.LikesInPercent" class="form-control" />
+        </div>
+        <div>
+            <label>Likes</label>
+            <InputText @bind-Value="course.Likes" class="form-control" />
+        </div>
+        <div>
+            <label>Hours</label>
+            <InputText @bind-Value="course.Hours" class="form-control" />
+        </div>
+
+        <div>
+            <label>Authors</label>
+            <div>
+                <InputText @bind-Value="AuthorInput" class="form-control" />
+            </div>
+        </div>
+
+        <div>
+            <label>Description</label>
+            <textarea @bind="course.Content!.Description" class="form-control"></textarea>
+        </div>
+
+        <div>
+            <label>Includes</label>
+
+            @for (int i = 0; i < course.Content.Includes!.Length; i++)
+            {
+                var currentIndex = i;
+                <div>
+                    <InputText @bind-Value="course.Content.Includes[currentIndex]" class="form-control" @oninput="(e) => AddInclude(currentIndex, e.Value.ToString()!)" />
+                </div>
+            }
+        </div>
+
+        <div>
+            <label>Program Details</label>
+
+            @for (int i = 0; i < 6; i++)
+            {
+                if (i < course.Content.ProgramDetails.Count)
+                {
+                    var programDetail = course.Content.ProgramDetails[i];
+
+                    <div>
+                        <InputText @bind-Value="programDetail.Title" class="form-control" />
+                        <textarea @bind="programDetail.Description" class="form-control"></textarea>
+                    </div>
+                }
+            }
+        </div>
+        <div>
+            <label>Image Uri</label>
+            <InputText @bind-Value="course.ImageUri" class="form-control" />
+        </div>
+        <div>
+            <label>Image Header Uri</label>
+            <InputText @bind-Value="course.ImageHeaderUri" class="form-control" />
+        </div>
+        <div>
+            <label>Is Bestseller</label>
+            <input type="checkbox" @bind="course.IsBestseller" />
+        </div>
+        <div>
+            <label>Is Digital</label>
+            <input type="checkbox" @bind="course.IsDigital" />
+        </div>
+
+        <button class="btn btn-primary" @onclick="() => CreateCourseAsync(course)">Save Changes</button>
+        <button class="btn btn-secondary" @onclick="CancelCreate">Cancel</button>
+    </div>
+
+</section>
 
 @code {
     [Parameter]
     public EventCallback<string> OnClick { get; set; }
+    private string AuthorInput = string.Empty;
+
+    private CreateCourseCard course = new CreateCourseCard()
+        {
+            Authors = new List<AuthorCreateRequest>(),
+            Content = new ContentCreateRequest
+            {
+                Includes = new string[5],
+                ProgramDetails = Enumerable.Range(1, 6)
+                                           .Select(i => new ProgramDetailItemCreateRequest
+                                           {
+                                               Id = i
+                                           })
+                                           .ToList()
+            },
+        };
+
+    private void AddProgramDetails()
+    {
+        if (course.Content!.ProgramDetails!.Count < 6)
+            course.Content.ProgramDetails.Add(new ProgramDetailItemCreateRequest());
+    }
+
+    private void AddInclude(int index, string value)
+    {
+        if (index >= 0 && index < course.Content!.Includes!.Length)
+        {
+            course.Content.Includes[index] = value;
+        }
+    }
+
+    private async Task CreateCourseAsync(CreateCourseCard courseInput)
+    {
+        try
+        {
+            if (!string.IsNullOrEmpty(AuthorInput))
+            {
+                course.Authors!.Add(new AuthorCreateRequest { Name = AuthorInput });
+            }
+            var result = await CourseService.CreateNewCourseAsync(courseInput);
+            if (result != null)
+            {
+                await OnClick.InvokeAsync("");
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    private async Task CancelCreate()
+    {
+        await OnClick.InvokeAsync("");
+    }
 }

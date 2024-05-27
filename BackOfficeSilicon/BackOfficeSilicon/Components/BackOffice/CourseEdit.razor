@@ -181,7 +181,7 @@
             if (updatedCourse != null)
             {
                 course = updatedCourse;
-                await InvokeAsync(StateHasChanged);
+                await OnClick.InvokeAsync("");
             }
         }
         catch (Exception)
