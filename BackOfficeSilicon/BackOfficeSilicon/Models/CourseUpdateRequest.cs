@@ -25,6 +25,7 @@ public class AuthorUpdateRequest
 {
     public string? Name { get; set; }
 }
+
 public class ContentUpdateRequest
 {
     public string? Description { get; set; }
@@ -41,7 +42,7 @@ public class PricesUpdateRequest
 
 public class ProgramDetailItemUpdateRequest
 {
-    public int Id { get; set; }
+    public int? Id { get; set; }
     public string? Title { get; set; }
     public string? Description { get; set; }
 }

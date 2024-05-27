@@ -6,6 +6,8 @@
 @inject CourseService CourseService
 @inject IConfiguration Configuration
 
+@rendermode InteractiveServer
+
 <section class="course-edit">
     @if (course != null)
     {
@@ -38,31 +40,34 @@
                 <label>Hours</label>
                 <input type="text" @bind="course.Hours" class="form-control" />
             </div>
+
             <div>
                 <label>Authors</label>
                 @if (course.Authors != null && course.Authors.Any())
                 {
-                    foreach (var author in course.Authors)
+                    @foreach (var author in course.Authors)
                     {
                         <div>
-                            @author.Name
-                            <input type="hidden" @bind="author.Name" />
+                            <input type="text" @bind="@author.Name" class="form-control" />
                         </div>
                     }
                 }
             </div>
+
             <div>
                 <label>Description</label>
                 <textarea @bind="course.Content!.Description" class="form-control"></textarea>
             </div>
+
             <div>
                 <label>Includes</label>
-                @if (course.Content.Includes != null && course.Content.Includes.Any())
+                @if (course!.Content!.Includes != null)
                 {
-                    @for (int i = 0; i < course.Content.Includes.Count; i++)
+                    @for (int i = 0; i < tempIncludes.Count; i++)
                     {
+                        var currentIndex = i;
                         <div>
-                            <input type="text" @bind="course.Content.Includes[i]" class="form-control" />
+                            <input type="text" value="@tempIncludes[i]" @oninput="(e) => UpdateInclude(currentIndex, e.Value!.ToString()!)" class="form-control" />
                         </div>
                     }
                 }
@@ -70,13 +75,15 @@
 
             <div>
                 <label>Program Details</label>
-                @if (course.Content.ProgramDetails != null && course.Content.ProgramDetails.Any())
+                @if (course!.Content!.ProgramDetails != null && course.Content.ProgramDetails.Any())
                 {
                     @for (int i = 0; i < course.Content.ProgramDetails.Count; i++)
                     {
+                        var programDetail = course.Content.ProgramDetails[i];
+
                         <div>
-                            <input type="text" @bind="course.Content.ProgramDetails[i].Title" class="form-control" />
-                            <textarea @bind="course.Content.ProgramDetails[i].Description" class="form-control"></textarea>
+                            <input type="text" @bind="programDetail.Title" class="form-control" />
+                            <textarea @bind="programDetail.Description" class="form-control"></textarea>
                         </div>
                     }
                 }
@@ -115,123 +122,72 @@
     [Parameter]
     public string CourseId { get; set; } = null!;
     private CourseCard? course;
+    private List<string> tempIncludes = new List<string>();
 
 
     protected override async Task OnInitializedAsync()
     {
-        course = await CourseService.GetCourseToUpdateByIdAsync(CourseId);
+        await LoadCourse();
+        InitializeTempIncludes();
     }
 
-    private async Task<CourseCard> UpdateCourseAsync(CourseCard courseInput)
+    private void InitializeTempIncludes()
     {
-        var query = new GraphQLQuery
+        if (course?.Content?.Includes != null)
         {
-            Query = @"
-            mutation UpdateCourse($input: CourseUpdateRequestInput!) {
-                updateCourse(input: $input) {
-                    id
-                    imageUri
-                    imageHeaderUri
-                    isBestseller
-                    isDigital
-                    categories
-                    title
-                    ingress
-                    starRating
-                    reviews
-                    likesInPercent
-                    likes
-                    hours
-                    authors {
-                        name
-                    }
-                    content {
-                        description
-                        includes
-                        programDetails {
-                            id
-                            title
-                            description
-                        }
-                    }
-                    prices {
-                        currency
-                        price
-                        discount
-                    }
-                }
-            }",
-                Variables = new { input = courseInput }
-        };
+            tempIncludes = new List<string>(course.Content.Includes);
+        }
+        else
+        {
+            tempIncludes = new List<string>();
+        }
+    }
 
+    private void UpdateInclude(int index, string value)
+    {
+        if (index >= 0 && index < tempIncludes.Count)
+        {
+            tempIncludes[index] = value;
+        }
+    }
+
+    private async Task LoadCourse()
+    {
         try
         {
-            var response = await Http.PostAsJsonAsync(Configuration.GetValue<string>("ConnectionStrings:GetCoursesProvider"), query);
-
-
-            if (response.IsSuccessStatusCode)
+            course = await CourseService.GetCourseToUpdateByIdAsync(CourseId);
+            if (course?.Content?.Includes == null)
             {
-                var jsonResponse = await response.Content.ReadAsStringAsync();
-                var document = JsonDocument.Parse(jsonResponse);
-                var root = document.RootElement;
-
-                if (root.TryGetProperty("data", out var data) && data.TryGetProperty("updateCourse", out var courseData))
-                {
-                    return new CourseCard
-                        {
-                            Id = courseData.TryGetProperty("id", out var id) ? id.GetString() ?? "" : "",
-                            Hours = courseData.TryGetProperty("hours", out var hours) ? hours.GetString() ?? "" : "",
-                            ImageHeaderUri = courseData.TryGetProperty("imageHeaderUri", out var imageHeaderUri) ? imageHeaderUri.GetString() ?? "" : "",
-                            ImageUri = courseData.TryGetProperty("imageUri", out var imageUri) ? imageUri.GetString() ?? "" : "",
-                            Ingress = courseData.TryGetProperty("ingress", out var ingress) ? ingress.GetString() ?? "" : "",
-                            IsBestseller = courseData.TryGetProperty("isBestseller", out var isBestseller) && isBestseller.GetBoolean(),
-                            IsDigital = courseData.TryGetProperty("isDigital", out var isDigital) && isDigital.GetBoolean(),
-                            Likes = courseData.TryGetProperty("likes", out var likes) ? likes.GetString() ?? "" : "",
-                            LikesInPercent = courseData.TryGetProperty("likesInPercent", out var likesInPercent) ? likesInPercent.GetString() ?? "" : "",
-                            Reviews = courseData.TryGetProperty("reviews", out var reviews) ? reviews.GetString() ?? "" : "",
-                            StarRating = courseData.TryGetProperty("starRating", out var starRating) ? starRating.GetDecimal() : 0,
-                            Title = courseData.TryGetProperty("title", out var title) ? title.GetString() ?? "" : "",
-                            Authors = courseData.TryGetProperty("authors", out var authors) && authors.ValueKind == JsonValueKind.Array
-                                ? authors.EnumerateArray().Select(a => new Author { Name = a.TryGetProperty("name", out var name) ? name.GetString() ?? "" : "" }).ToList()
-                                : new List<Author>(),
-                            Content = courseData.TryGetProperty("content", out var content) && content.ValueKind == JsonValueKind.Object
-                                ? new Content
-                                {
-                                    Description = content.TryGetProperty("description", out var description) ? description.GetString() ?? "" : "",
-                                    Includes = content.TryGetProperty("includes", out var includes) && includes.ValueKind == JsonValueKind.Array
-                                        ? includes.EnumerateArray().Select(i => i.GetString()).ToList()!
-                                        : new List<string>(),
-                                    ProgramDetails = content.TryGetProperty("programDetails", out var programDetails) && programDetails.ValueKind == JsonValueKind.Array
-                                        ? programDetails.EnumerateArray().Select(pd => new ProgramDetail
-                                        {
-                                            Id = pd.TryGetProperty("id", out var pdId) ? pdId.GetInt32() : 0,
-                                            Title = pd.TryGetProperty("title", out var pdTitle) ? pdTitle.GetString() ?? "" : "",
-                                            Description = pd.TryGetProperty("description", out var pdDescription) ? pdDescription.GetString() ?? "" : ""
-                                        }).ToList()
-                                        : new List<ProgramDetail>()
-                                }
-                                : null,
-                            Prices = courseData.TryGetProperty("prices", out var prices) && prices.ValueKind == JsonValueKind.Object
-                                ? new Prices
-                                {
-                                    Currency = prices.TryGetProperty("currency", out var currency) ? currency.GetString() ?? "" : "",
-                                    Discount = prices.TryGetProperty("discount", out var discount) ? discount.GetDecimal() : 0,
-                                    Price = prices.TryGetProperty("price", out var price) ? price.GetDecimal() : 0
-                                }
-                                : null
-                        };
-                }
-                else
-                {
-                    throw new InvalidOperationException("The result data does not contain the expected 'updateCourse' property.");
-                }
+                course!.Content!.Includes = new List<string>();
             }
+
+            tempIncludes = new List<string>(course.Content.Includes);
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error in UpdateCourseAsync: {ex.Message}");
+            Console.WriteLine($"Error loading course: {ex.Message}");
         }
-        return null!;
+    }
+
+    private async Task UpdateCourseAsync(CourseCard courseInput)
+    {
+        courseInput.Content!.Includes = tempIncludes;
+        var input = CourseService.MapCourseCardToUpdateRequest(courseInput, tempIncludes);
+
+        try
+        {
+            var updatedCourse = await CourseService.UpdateCourseAsync(courseInput);
+
+            if (updatedCourse != null)
+            {
+                course = updatedCourse;
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
     public async Task CancelUpdate()
