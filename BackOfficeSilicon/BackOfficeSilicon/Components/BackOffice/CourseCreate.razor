@@ -51,7 +51,7 @@
             {
                 var currentIndex = i;
                 <div>
-                    <InputText @bind-Value="course.Content.Includes[currentIndex]" class="form-control" @oninput="(e) => AddInclude(currentIndex, e.Value.ToString()!)" />
+                    <InputText @bind-Value="course.Content.Includes[currentIndex]" class="form-control" @oninput="(e) => AddInclude(currentIndex, e.Value!.ToString()!)" />
                 </div>
             }
         </div>
@@ -61,7 +61,7 @@
 
             @for (int i = 0; i < 6; i++)
             {
-                if (i < course.Content.ProgramDetails.Count)
+                if (i < course.Content.ProgramDetails!.Count)
                 {
                     var programDetail = course.Content.ProgramDetails[i];
 

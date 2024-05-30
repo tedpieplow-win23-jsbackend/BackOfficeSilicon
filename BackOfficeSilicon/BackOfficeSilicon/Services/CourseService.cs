@@ -1,6 +1,7 @@
 ﻿using BackOfficeSilicon.Models;
 using static System.Net.WebRequestMethods;
 using System.Text.Json;
+using System.Net;
 
 namespace BackOfficeSilicon.Services;
 
@@ -335,5 +336,18 @@ public class CourseService(HttpClient http, IConfiguration configuration)
             Console.WriteLine($"Error in UpdateCourseAsync: {ex.Message}");
         }
         return null!;
+    }
+
+    public async Task<HttpStatusCode> DeleteCourseByIdAsync(string courseId)
+    {
+        var query = new GraphQLQuery
+        {
+            Query = @" mutation deleteCourse($id: String!) { deleteCourses (id: $id)}",
+            Variables = new { id = courseId }
+        };
+
+        var response = await _http.PostAsJsonAsync(_configuration["GetCoursesProvider"], query);
+
+        return response.StatusCode;
     }
 }

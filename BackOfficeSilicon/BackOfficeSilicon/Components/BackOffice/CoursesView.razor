@@ -1,6 +1,7 @@
 ﻿@using BackOfficeSilicon.Models
 @inject IConfiguration Configuration
 @inject NavigationManager NavigationManager
+@inject CourseService CourseService
 
 @rendermode InteractiveServer
 
@@ -74,15 +75,9 @@
 
     private async Task DeleteCourseAsync(string courseId)
     {
-        var query = new GraphQLQuery
-        {
-            Query = @" mutation deleteCourse($id: String!) { deleteCourses (id: $id)}",
-            Variables = new { id = courseId }
-        };
+        var response = await CourseService.DeleteCourseByIdAsync(courseId);
 
-        var response = await Http.PostAsJsonAsync(Configuration["GetCoursesProvider"], query);
-
-        if (response.IsSuccessStatusCode)
+        if (response == System.Net.HttpStatusCode.OK)
         {
             if (courses != null)
             {

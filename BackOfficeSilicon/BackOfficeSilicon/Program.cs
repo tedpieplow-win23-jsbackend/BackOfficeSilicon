@@ -1,16 +1,8 @@
 using BackOfficeSilicon.Components;
 using BackOfficeSilicon.Configurations;
 using Azure.Identity;
-using Azure.Security.KeyVault.Secrets;
 
 var builder = WebApplication.CreateBuilder(args);
-
-//// Configure the client
-//var client = new SecretClient(new Uri("https://backofficesiliconkv.vault.azure.net/"), new DefaultAzureCredential());
-
-//// Retrieve a secret
-//KeyVaultSecret secret = client.GetSecret("VaultUri");
-//Console.WriteLine(secret.Value);
 
 var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri")!);
 builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
