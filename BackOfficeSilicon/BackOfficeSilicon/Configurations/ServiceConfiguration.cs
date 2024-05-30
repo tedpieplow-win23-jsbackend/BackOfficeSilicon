@@ -70,15 +70,4 @@ public static class ServiceConfiguration
             .AddRoleStore<RoleStore<IdentityRole, ApplicationDbContext>>()
             .AddDefaultTokenProviders();
     }
-    //public static void Configure(IApplicationBuilder app)
-    //{
-    //    app.UseRouting();
-    //    app.UseCors();
-    //    app.UseEndpoints(endpoints =>
-    //    {
-    //        endpoints.MapBlazorHub();
-    //        endpoints.MapHub<ChatHub>("/chathub");
-    //        endpoints.MapFallbackToPage("/_host");
-    //    });
-    //}
 }
