@@ -51,7 +51,13 @@ public class CourseService(HttpClient http, IConfiguration configuration)
             Variables = new { id = $"{courseId}" }
         };
 
-        var response = await _http.PostAsJsonAsync(_configuration.GetValue<string>("ConnectionStrings:GetCoursesProvider"), query);
+        var getCoursesProviderUrl = _configuration["GetCoursesProvider"];
+        if (string.IsNullOrEmpty(getCoursesProviderUrl))
+        {
+            throw new InvalidOperationException("GetCoursesProvider URL not found in configuration.");
+        }
+
+        var response = await _http.PostAsJsonAsync(getCoursesProviderUrl, query);
 
         if (response.IsSuccessStatusCode)
         {
@@ -150,7 +156,7 @@ public class CourseService(HttpClient http, IConfiguration configuration)
 
         try
         {
-            var response = await _http.PostAsJsonAsync(_configuration.GetValue<string>("ConnectionStrings:GetCoursesProvider"), query);
+            var response = await _http.PostAsJsonAsync(_configuration["GetCoursesProvider"], query);
             //var response = await _http.PostAsJsonAsync("http://localhost:7228/api/graphql", query);
 
 
@@ -312,7 +318,7 @@ public class CourseService(HttpClient http, IConfiguration configuration)
 
         try
         {
-            var response = await _http.PostAsJsonAsync(_configuration.GetValue<string>("ConnectionStrings:GetCoursesProvider"), query);
+            var response = await _http.PostAsJsonAsync(_configuration["GetCoursesProvider"], query);
             //var response = await _http.PostAsJsonAsync("http://localhost:7228/api/graphql", query);
 
             // Fixa visuella meddelanden. 

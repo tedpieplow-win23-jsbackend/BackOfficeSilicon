@@ -13,7 +13,7 @@ public class NewsletterService(HttpClient http, IConfiguration configuration)
     {
         try
         {
-            var result = await Http.PostAsync("https://subscriptionprovider-silicon.azurewebsites.net/api/GetSubscribersFunction?code=VdUem1ardDpuXjfbHNodWR6NRuTneq6ZTFo3n_8r7fHZAzFutbdzXA==", null);
+            var result = await Http.PostAsync(_configuration["GetNewsletterProvider"], null);
             if (result.IsSuccessStatusCode)
             {
                 var list = await result.Content.ReadFromJsonAsync<IEnumerable<NewsletterModel>>();
@@ -33,7 +33,7 @@ public class NewsletterService(HttpClient http, IConfiguration configuration)
             var requestData = new { Email = email };
             var json = JsonConvert.SerializeObject(requestData);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var result = await Http.PostAsync(_configuration.GetConnectionString("GetNewsletterProvider"), content);
+            var result = await Http.PostAsync(_configuration["GetNewsletterProvider"], content);
             if (result.IsSuccessStatusCode)
             {
                 var model = await result.Content.ReadFromJsonAsync<NewsletterModel>();
@@ -49,7 +49,7 @@ public class NewsletterService(HttpClient http, IConfiguration configuration)
     {
         var json = JsonConvert.SerializeObject(model);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
-        var result = await Http.PostAsync(_configuration.GetConnectionString("UpdateNewsletterProvider"), content);
+        var result = await Http.PostAsync(_configuration["UpdateNewsletterProvider"], content);
         if (result.IsSuccessStatusCode)
             return true;
         return false;
@@ -58,7 +58,7 @@ public class NewsletterService(HttpClient http, IConfiguration configuration)
     {
         var json = JsonConvert.SerializeObject(new { Email = email });
         var content = new StringContent(json, Encoding.UTF8, "application/json");
-        var response = await Http.PostAsync(_configuration.GetConnectionString("DeleteNewsletterProvider"), content);
+        var response = await Http.PostAsync(_configuration["DeleteNewsletterProvider"], content);
 
         var result = await GetSubscribersAsync();
         if(result.Any()) 

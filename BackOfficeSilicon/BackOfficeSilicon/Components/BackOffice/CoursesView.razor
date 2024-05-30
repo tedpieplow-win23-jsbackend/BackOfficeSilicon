@@ -45,7 +45,8 @@
     private async Task GetCoursesAsync()
     {
         var query = new GraphQLQuery { Query = "{ getCourses { id title } }" };
-        var response = await Http.PostAsJsonAsync(Configuration.GetValue<string>("ConnectionStrings:GetCoursesProvider"), query);
+
+        var response = await Http.PostAsJsonAsync(Configuration["GetCoursesProvider"], query);
 
         if (response.IsSuccessStatusCode)
         {
@@ -79,7 +80,7 @@
             Variables = new { id = courseId }
         };
 
-        var response = await Http.PostAsJsonAsync(Configuration.GetValue<string>("ConnectionStrings:GetCoursesProvider"), query);
+        var response = await Http.PostAsJsonAsync(Configuration["GetCoursesProvider"], query);
 
         if (response.IsSuccessStatusCode)
         {
