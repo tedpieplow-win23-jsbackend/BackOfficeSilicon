@@ -9,17 +9,17 @@
     <div>
         <div class="input">
             <label>Title</label>
-            <ValidationMessage For="@(() => course.Title)"/>
+            <ValidationMessage For="@(() => course.Title)" />
             <InputText @bind-Value="course.Title" class="form-control" />
         </div>
         <div class="input ingress">
             <label>Ingress</label>
-            <ValidationMessage For="@(() => course.Ingress)"/>
+            <ValidationMessage For="@(() => course.Ingress)" />
             <textarea @bind="course.Ingress" class="form-control"></textarea>
         </div>
         <div class="input">
             <label>Star Rating</label>
-            <ValidationMessage For="@(() => course.StarRating)"/>
+            <ValidationMessage For="@(() => course.StarRating)" />
             <InputNumber @bind-Value="course.StarRating" step="0.1" class="form-control" />
         </div>
         <div class="input">
@@ -79,7 +79,7 @@
                     var programDetail = course.Content.ProgramDetails[i];
 
                     <div class="input">
-                         <ValidationMessage For="@(() => course.Content.ProgramDetails)" />
+                        <ValidationMessage For="@(() => course.Content.ProgramDetails)" />
                         <InputText @bind-Value="programDetail.Title" class="form-control" />
                         <textarea @bind="programDetail.Description" class="form-control"></textarea>
                     </div>
@@ -124,11 +124,11 @@
             {
                 Includes = new string[5],
                 ProgramDetails = Enumerable.Range(1, 6)
-                                                   .Select(i => new ProgramDetailItemCreateRequest
-                                                   {
-                                                       Id = i
-                                                   })
-                                                   .ToList()
+                                                       .Select(i => new ProgramDetailItemCreateRequest
+                                                       {
+                                                           Id = i
+                                                       })
+                                                       .ToList()
             },
         };
 
