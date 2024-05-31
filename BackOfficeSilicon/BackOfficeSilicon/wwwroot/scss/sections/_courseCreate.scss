@@ -1,0 +1,41 @@
+﻿.section-title {
+    margin-top: 60px;
+
+    h1 {
+        color: var(--color-gray-900);
+    }
+
+    p {
+        color: var(--color-gray-300);
+    }
+}
+
+
+.course-edit {
+    margin-top: 30px;
+
+    .input {
+        position: relative;
+
+        .validation-message {
+            position: absolute;
+            right: 10px;
+            bottom: 40px;
+        }
+
+        &.ingress .validation-message {
+            bottom: 65px;
+        }
+    }
+
+    label {
+        font-weight: 700;
+        margin-top: .7rem;
+    }
+
+    .button-section {
+        display: flex;
+        gap: 20px;
+        margin-top: 10px;
+    }
+}

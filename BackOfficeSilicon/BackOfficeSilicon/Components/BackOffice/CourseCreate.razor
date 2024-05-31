@@ -1,45 +1,57 @@
 ﻿@inject CourseService CourseService
+<div class="section-title">
+    <h1>Create a new course</h1>
+    <p>(All fields needs to be filled)</p>
+</div>
 
-<section class="course-edit">
-
+<EditForm Model="@course" OnValidSubmit="@CreateCourseAsync" class="course-edit">
+    <DataAnnotationsValidator />
     <div>
-        <div>
+        <div class="input">
             <label>Title</label>
+            <ValidationMessage For="@(() => course.Title)"/>
             <InputText @bind-Value="course.Title" class="form-control" />
         </div>
-        <div>
+        <div class="input ingress">
             <label>Ingress</label>
+            <ValidationMessage For="@(() => course.Ingress)"/>
             <textarea @bind="course.Ingress" class="form-control"></textarea>
         </div>
-        <div>
+        <div class="input">
             <label>Star Rating</label>
+            <ValidationMessage For="@(() => course.StarRating)"/>
             <InputNumber @bind-Value="course.StarRating" step="0.1" class="form-control" />
         </div>
-        <div>
+        <div class="input">
             <label>Reviews</label>
+            <ValidationMessage For="@(() => course.Reviews)" />
             <InputText @bind-Value="course.Reviews" class="form-control" />
         </div>
-        <div>
+        <div class="input">
             <label>Likes in Percent</label>
+            <ValidationMessage For="@(() => course.LikesInPercent)" />
             <InputText @bind-Value="course.LikesInPercent" class="form-control" />
         </div>
-        <div>
+        <div class="input">
             <label>Likes</label>
+            <ValidationMessage For="@(() => course.Likes)" />
             <InputText @bind-Value="course.Likes" class="form-control" />
         </div>
-        <div>
+        <div class="input">
             <label>Hours</label>
+            <ValidationMessage For="@(() => course.Hours)" />
             <InputText @bind-Value="course.Hours" class="form-control" />
         </div>
 
-        <div>
+        <div class="input">
             <label>Authors</label>
             <div>
+                <ValidationMessage For="@(() => AuthorInput)" />
                 <InputText @bind-Value="AuthorInput" class="form-control" />
             </div>
         </div>
 
-        <div>
+        <div class="input">
             <label>Description</label>
             <textarea @bind="course.Content!.Description" class="form-control"></textarea>
         </div>
@@ -50,7 +62,8 @@
             @for (int i = 0; i < course.Content.Includes!.Length; i++)
             {
                 var currentIndex = i;
-                <div>
+                <div class="input">
+                    <ValidationMessage For="@(() => course.Content.Includes)" />
                     <InputText @bind-Value="course.Content.Includes[currentIndex]" class="form-control" @oninput="(e) => AddInclude(currentIndex, e.Value!.ToString()!)" />
                 </div>
             }
@@ -65,19 +78,22 @@
                 {
                     var programDetail = course.Content.ProgramDetails[i];
 
-                    <div>
+                    <div class="input">
+                         <ValidationMessage For="@(() => course.Content.ProgramDetails)" />
                         <InputText @bind-Value="programDetail.Title" class="form-control" />
                         <textarea @bind="programDetail.Description" class="form-control"></textarea>
                     </div>
                 }
             }
         </div>
-        <div>
+        <div class="input">
             <label>Image Uri</label>
+            <ValidationMessage For="@(() => course.ImageUri)" />
             <InputText @bind-Value="course.ImageUri" class="form-control" />
         </div>
-        <div>
+        <div class="input">
             <label>Image Header Uri</label>
+            <ValidationMessage For="@(() => course.ImageHeaderUri)" />
             <InputText @bind-Value="course.ImageHeaderUri" class="form-control" />
         </div>
         <div>
@@ -88,12 +104,13 @@
             <label>Is Digital</label>
             <input type="checkbox" @bind="course.IsDigital" />
         </div>
-
-        <button class="btn btn-primary" @onclick="() => CreateCourseAsync(course)">Save Changes</button>
-        <button class="btn btn-secondary" @onclick="CancelCreate">Cancel</button>
+        <div class="button-section">
+            <button class="btn btn-theme" type="submit">Save Changes</button>
+            <button class="btn btn-secondary" @onclick="CancelCreate">Cancel</button>
+        </div>
     </div>
 
-</section>
+</EditForm>
 
 @code {
     [Parameter]
@@ -107,11 +124,11 @@
             {
                 Includes = new string[5],
                 ProgramDetails = Enumerable.Range(1, 6)
-                                           .Select(i => new ProgramDetailItemCreateRequest
-                                           {
-                                               Id = i
-                                           })
-                                           .ToList()
+                                                   .Select(i => new ProgramDetailItemCreateRequest
+                                                   {
+                                                       Id = i
+                                                   })
+                                                   .ToList()
             },
         };
 
@@ -129,7 +146,7 @@
         }
     }
 
-    private async Task CreateCourseAsync(CreateCourseCard courseInput)
+    private async Task CreateCourseAsync()
     {
         try
         {
@@ -137,7 +154,7 @@
             {
                 course.Authors!.Add(new AuthorCreateRequest { Name = AuthorInput });
             }
-            var result = await CourseService.CreateNewCourseAsync(courseInput);
+            var result = await CourseService.CreateNewCourseAsync(course);
             if (result != null)
             {
                 await OnClick.InvokeAsync("");
